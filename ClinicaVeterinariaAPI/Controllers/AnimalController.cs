@@ -17,6 +17,10 @@ namespace ClinicaVeterinariaAPI.Controllers
             );
 
         // GET: api/Animal
+        /// <summary>
+        /// All Animals
+        /// </summary>
+        /// <returns>Animals list</returns>
         public List<Animal> Get()
         {
             var list = from Animal in db.Animals orderby Animal.Name select Animal;
@@ -24,6 +28,11 @@ namespace ClinicaVeterinariaAPI.Controllers
         }
 
         // GET: api/Animal/5
+        /// <summary>
+        /// Specific (one) Animal
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Animal</returns>
         public IHttpActionResult Get(int id)
         {
             var animal = db.Animals.FirstOrDefault(a => a.Id == id);
@@ -37,6 +46,10 @@ namespace ClinicaVeterinariaAPI.Controllers
         }
 
         // POST: api/Animal
+        /// <summary>
+        /// Creates a new Animal
+        /// </summary>
+        /// <param name="newAnimal">Animal</param>
         public IHttpActionResult Post([FromBody]Animal newAnimal)
         {
             var animal = db.Animals.FirstOrDefault(a => a.Id == newAnimal.Id);
@@ -69,10 +82,14 @@ namespace ClinicaVeterinariaAPI.Controllers
             }
 
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK));
-
         }
 
         // PUT: api/Animal/5
+        /// <summary>
+        /// Updates (one) Animal
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedAnimal">Animal</param>
         public IHttpActionResult Put(int id, [FromBody]Animal updatedAnimal)
         {
             var animal = db.Animals.FirstOrDefault(a => a.Id == updatedAnimal.Id);
@@ -115,6 +132,10 @@ namespace ClinicaVeterinariaAPI.Controllers
         }
 
         // DELETE: api/Animal/5
+        /// <summary>
+        /// Deletes (one) Animal
+        /// </summary>
+        /// <param name="id"></param>
         public IHttpActionResult Delete(int id)
         {
             var animal = db.Animals.FirstOrDefault(a => a.Id == id);

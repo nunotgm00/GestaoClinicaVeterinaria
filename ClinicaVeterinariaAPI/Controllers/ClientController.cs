@@ -18,9 +18,9 @@ namespace ClinicaVeterinariaAPI.Controllers
 
         // GET: api/Client
         /// <summary>
-        /// All clients
+        /// All Clients
         /// </summary>
-        /// <returns>Clients List</returns>
+        /// <returns>Clients ist</returns>
         public List<Client> Get()
         {
             var list = from Client in db.Clients orderby Client.Name select Client;
@@ -29,7 +29,7 @@ namespace ClinicaVeterinariaAPI.Controllers
 
         // GET: api/Client/5
         /// <summary>
-        /// Specific (one) client
+        /// Specific (one) Client
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Client</returns>
@@ -110,7 +110,7 @@ namespace ClinicaVeterinariaAPI.Controllers
 
         // DELETE: api/Client/5
         /// <summary>
-        /// Deletes (one) CLient
+        /// Deletes (one) Client
         /// </summary>
         /// <param name="id"></param>
         public IHttpActionResult Delete(int id)
