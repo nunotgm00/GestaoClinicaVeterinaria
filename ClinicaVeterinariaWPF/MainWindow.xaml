@@ -1,0 +1,16 @@
+﻿<Window x:Class="ClinicaVeterinariaWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel Margin="20" VerticalAlignment="Center">
+        <Button x:Name="BtnAnimals" Content="Gerir Animais" Height="40" Margin="0,0,0,10" Click="BtnAnimals_Click"/>
+        <Button x:Name="BtnClients" Content="Gerir Clientes" Height="40" Margin="0,0,0,10" Click="BtnClients_Click"/>
+        <Button x:Name="BtnDoctors" Content="Gerir Doutores" Height="40" Margin="0,0,0,10" Click="BtnDoctors_Click"/>
+        <Button x:Name="BtnRooms" Content="Gerir Salas" Height="40" Margin="0,0,0,10" Click="BtnRooms_Click"/>
+        <Button x:Name="BtnAppointments" Content="Gerir Consultas" Height="40" Margin="0,0,0,10" Click="BtnAppointments_Click"/>
+    </StackPanel>
+</Window>
