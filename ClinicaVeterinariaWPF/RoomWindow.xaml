@@ -1,0 +1,55 @@
+﻿<Window x:Class="ClinicaVeterinariaWPF.RoomWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
+        mc:Ignorable="d"
+        Title="RoomWindow" Height="500" Width="600">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="ComboBoxSearch" Width="120" Margin="0,0,10,0">
+                <ComboBoxItem Content="Número"/>
+                <ComboBoxItem Content="Tipo"/>
+            </ComboBox>
+            <TextBox x:Name="TextBoxSearch" Width="200" Margin="0,0,10,0"/>
+            <Button x:Name="btnSeach" Content="Procurar" Width="80" Click="btnSeach_Click"/>
+        </StackPanel>
+
+        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridSearch_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Número" Binding="{Binding Id}" Width="*"/>
+                <DataGridTextColumn Header="Tipo" Binding="{Binding Type}" Width="2*"/>
+                <DataGridTextColumn Header="Em Manutenção" Binding="{Binding UnderMaintenance}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+            <Button x:Name="btnEdit" Content="Editar" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
+            <Button x:Name="btnDelete" Content="Eliminar" Width="80" Click="btnDelete_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Margin="0,0,0,10">
+            <TextBlock Text="Número da sala"/>
+            <TextBox x:Name="TextBoxRoomNumber" IsEnabled="False" Margin="0,0,0,5"/>
+            <TextBlock Text="Tipo"/>
+            <TextBox x:Name="TextBoxType" Margin="0,0,0,5"/>
+            <CheckBox x:Name="CheckBoxUnderMaintenance" Content="Em Manutenção" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnNew" Content="Novo" Width="80" Margin="0,0,10,0" Click="btnNew_Click"/>
+            <Button x:Name="btnSave" Content="Guardar" Width="80" Margin="0,0,10,0"  Click="btnSave_Click"/>
+            <Button x:Name="btnClose" Content="Fechar" Width="80" Click="btnClose_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
