@@ -84,6 +84,7 @@
     <Compile Include="Models\Appointment.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Doctor.cs" />
+    <Compile Include="Models\Room.cs" />
     <Compile Include="RoomWindow.xaml.cs">
       <DependentUpon>RoomWindow.xaml</DependentUpon>
     </Compile>
