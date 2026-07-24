@@ -1,0 +1,94 @@
+﻿<Window x:Class="ClinicaVeterinariaWPF.DoctorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
+        mc:Ignorable="d"
+        Title="DoctorWindow" Height="700" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="ComboBoxSearch" Width="120" Margin="0,0,10,0">
+                <ComboBoxItem Content="Nome"/>
+                <ComboBoxItem Content="Especialidade"/>
+            </ComboBox>
+            <TextBox x:Name="TextBoxSearch" Width="200" Margin="0,0,10,0"/>
+            <Button x:Name="btnSearch" Content="Procurar" Width="80" Click="btnSearch_Click"/>
+        </StackPanel>
+
+        <DataGrid x:Name="DataGridResults" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridResults_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="2*"/>
+                <DataGridTextColumn Header="Especialidade" Binding="{Binding Speciality}" Width="*"/>
+                <DataGridTextColumn Header="Ativo" Binding="{Binding Active}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+            <Button x:Name="btnEdit" Content="Editar" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
+            <Button x:Name="btnDelete" Content="Eliminar" Width="80" Click="btnDelete_Click"/>
+        </StackPanel>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="500"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                <TextBlock Text="Nome"/>
+                <TextBox x:Name="TextBoxName" Margin="0,0,0,5"/>
+                <TextBlock Text="Telefone"/>
+                <TextBox x:Name="TextBoxPhoneNumber" Margin="0,0,0,5"/>
+                <TextBlock Text="Especialidade"/>
+                <TextBox x:Name="TextBoxSpeciality" Margin="0,0,0,5"/>
+                <CheckBox x:Name="CheckBoxActive" Content="Ativo" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Horário Semanal" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                <DataGrid x:Name="DataGridSchedule" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridSchedule_SelectionChanged" Height="180" Margin="0,0,0,10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Dia" Binding="{Binding DayOfWeek}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Início" Binding="{Binding StartTime}" Width="*"/>
+                        <DataGridTextColumn Header="Fim" Binding="{Binding EndTime}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel Margin="0,0,10,0">
+                        <TextBlock Text="Hora Início"/>
+                        <xctk:TimePicker x:Name="TimePickerStart" Width="100" Format="ShortTime"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Hora Fim"/>
+                        <xctk:TimePicker x:Name="TimePickerEnd" Width="100" Format="ShortTime"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnAddHour" Content="Adicionar Hora" Width="110" Margin="0,0,5,0" Click="btnAddHour_Click"/>
+                    <Button x:Name="btnClearHour" Content="Limpar Hora" Width="100" Margin="0,0,5,0" Click="btnClearHour_Click"/>
+                    <Button x:Name="btnDayOff" Content="Folga" Width="70" Click="btnDayOff_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button x:Name="btnNew" Content="Novo" Width="80" Margin="0,0,10,0" Click="btnNew_Click"/>
+            <Button x:Name="btnSave" Content="Guardar" Width="80" Margin="0,0,10,0"  Click="btnSave_Click"/>
+            <Button x:Name="btnClose" Content="Fechar" Width="80" Click="btnClose_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
