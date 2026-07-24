@@ -80,6 +80,7 @@
     <Compile Include="DoctorWindow.xaml.cs">
       <DependentUpon>DoctorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Client.cs" />
     <Compile Include="RoomWindow.xaml.cs">
       <DependentUpon>RoomWindow.xaml</DependentUpon>
     </Compile>
