@@ -16,9 +16,7 @@ namespace ClinicaVeterinariaWPF.Services
         {
             try
             {
-                client.BaseAddress = new Uri(urlBase);
-
-                var response = await client.GetAsync(controller);
+                var response = await client.GetAsync($"{urlBase}/{controller}");
 
                 var result = await response.Content.ReadAsStringAsync();
 
@@ -53,9 +51,7 @@ namespace ClinicaVeterinariaWPF.Services
         {
             try
             {
-                client.BaseAddress = new Uri(urlBase);
-
-                var response = await client.GetAsync(controller + "/" + id);
+                var response = await client.GetAsync($"{urlBase}/{controller}/{id}");
 
                 var result = await response.Content.ReadAsStringAsync();
 
@@ -90,12 +86,10 @@ namespace ClinicaVeterinariaWPF.Services
         {
             try
             {
-                client.BaseAddress = new Uri(urlBase);
-
                 string jsonResult = JsonConvert.SerializeObject(item);
                 var content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync(controller, content);
+                var response = await client.PostAsync($"{urlBase}/{controller}", content);
 
                 var result = await response.Content.ReadAsStringAsync();
 
@@ -128,12 +122,10 @@ namespace ClinicaVeterinariaWPF.Services
         {
             try
             {
-                client.BaseAddress = new Uri(urlBase);
-
                 string jsonResult = JsonConvert.SerializeObject(item);
                 var content = new StringContent(jsonResult, Encoding.UTF8, "application/json");
 
-                var response = await client.PutAsync(controller + "/" + id, content);
+                var response = await client.PutAsync($"{urlBase}/{controller}/{id}", content);
 
                 var result = await response.Content.ReadAsStringAsync();
 
@@ -166,9 +158,7 @@ namespace ClinicaVeterinariaWPF.Services
         {
             try
             {
-                client.BaseAddress = new Uri(urlBase);
-
-                var response = await client.DeleteAsync(controller + "/" + id);
+                var response = await client.DeleteAsync($"{urlBase}/{controller}/{id}");
 
                 var result = await response.Content.ReadAsStringAsync();
 
