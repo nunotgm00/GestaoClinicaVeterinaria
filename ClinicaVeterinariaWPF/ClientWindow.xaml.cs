@@ -9,7 +9,7 @@ namespace ClinicaVeterinariaWPF
 {
     public partial class ClientWindow : Window
     {
-        private ApiService apiService = new ApiService();
+        private readonly ApiService apiService = new ApiService();
         private const string urlBase = "http://gestaoclinicaveterinariaapi.somee.com/api";
         private int? selectedClientId = -1;
         private List<Client> clients = new List<Client>();
@@ -95,7 +95,7 @@ namespace ClinicaVeterinariaWPF
             //
         }
 
-        private async void btnSearch_Click(object sender, RoutedEventArgs e)
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             searchClients.Clear();
 
@@ -218,7 +218,7 @@ namespace ClinicaVeterinariaWPF
             Client selected = DataGridSearch.SelectedItem as Client;
 
 
-            if (selected.Id == null)
+            if (selected == null)
             {
                 MessageBox.Show("Selecione um cliente para eliminar");
                 return;

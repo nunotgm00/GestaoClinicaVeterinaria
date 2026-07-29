@@ -22,10 +22,10 @@
                 <ComboBoxItem Content="Tipo"/>
             </ComboBox>
             <TextBox x:Name="TextBoxSearch" Width="200" Margin="0,0,10,0"/>
-            <Button x:Name="btnSeach" Content="Procurar" Width="80" Click="btnSeach_Click"/>
+            <Button x:Name="btnSeach" Content="Procurar" Width="80" Click="btnSearch_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridSearch_SelectionChanged">
+        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Número" Binding="{Binding Id}" Width="*"/>
                 <DataGridTextColumn Header="Tipo" Binding="{Binding Type}" Width="2*"/>
