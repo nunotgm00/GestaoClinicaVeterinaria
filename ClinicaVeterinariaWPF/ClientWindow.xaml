@@ -26,7 +26,7 @@
             <Button x:Name="btnSearch" Content="Procurar" Width="80" Click="btnSearch_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="2*"/>
                 <DataGridTextColumn Header="NIF" Binding="{Binding Nif}" Width="*"/>
