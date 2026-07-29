@@ -93,7 +93,7 @@ namespace ClinicaVeterinariaAPI.Controllers
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.ServiceUnavailable, e.Message));
             }
 
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK));
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, newAppointment));
         }
 
         // PUT: api/Appointment/5

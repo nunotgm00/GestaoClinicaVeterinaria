@@ -26,12 +26,13 @@
             <Button x:Name="btnSearch" Content="Procurar" Width="80" Click="btnSearch_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="DataGridResults" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridResults_SelectionChanged">
+        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="2*"/>
+                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="Espécie" Binding="{Binding Species}" Width="*"/>
                 <DataGridTextColumn Header="Raça" Binding="{Binding Breed}" Width="*"/>
                 <DataGridTextColumn Header="Idade" Binding="{Binding Age}" Width="*"/>
+                <DataGridTextColumn Header="Dono" Binding="{Binding ClientName}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -48,17 +49,17 @@
 
             <StackPanel Grid.Column="0" Margin="0,0,20,0">
                 <TextBlock Text="Nome"/>
-                <TextBox x:Name="TextBlockName" Margin="0,0,0,5"/>
+                <TextBox x:Name="TextBoxName" Margin="0,0,0,5"/>
                 <TextBlock Text="Espécie"/>
-                <TextBox x:Name="TextBlockSpecies" Margin="0,0,0,5"/>
+                <TextBox x:Name="TextBoxSpecies" Margin="0,0,0,5"/>
                 <TextBlock Text="Raça"/>
-                <TextBox x:Name="TextBlockBreed" Margin="0,0,0,5"/>
+                <TextBox x:Name="TextBoxBreed" Margin="0,0,0,5"/>
                 <TextBlock Text="Idade"/>
-                <TextBox x:Name="TextBlockAge" Margin="0,0,0,5"/>
+                <TextBox x:Name="TextBoxAge" Margin="0,0,0,5"/>
                 <TextBlock Text="Peso (Kg)"/>
-                <TextBox x:Name="TextBlockWeight" Margin="0,0,0,5"/>
+                <TextBox x:Name="TextBoxWeight" Margin="0,0,0,5"/>
                 <TextBlock Text="Cor"/>
-                <TextBox x:Name="TextBlockColor" Margin="0,0,0,5"/>
+                <TextBox x:Name="TextBoxColor" Margin="0,0,0,5"/>
                 <TextBlock Text="Sexo"/>
                 <ComboBox x:Name="ComboBoxSex" Margin="0,0,0,5">
                     <ComboBoxItem Content="Masculino"/>
@@ -71,9 +72,9 @@
                 <TextBlock Text="Consultas" FontWeight="Bold" Margin="0,0,0,5"/>
                 <DataGrid x:Name="DataGridAppointments" AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Data" Binding="{Binding Date}" Width="*"/>
+                        <DataGridTextColumn Header="Data" Binding="{Binding Date}" Width="2*"/>
                         <DataGridTextColumn Header="Motivo" Binding="{Binding Motive}" Width="2*"/>
-                        <DataGridTextColumn Header="Sala" Binding="{Binding Room}" Width="*"/>
+                        <DataGridTextColumn Header="Sala" Binding="{Binding RoomId}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

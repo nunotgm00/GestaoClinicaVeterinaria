@@ -1,5 +1,6 @@
 ﻿using ClinicaVeterinariaWPF.Models;
 using ClinicaVeterinariaWPF.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -217,7 +218,6 @@ namespace ClinicaVeterinariaWPF
         {
             Client selected = DataGridSearch.SelectedItem as Client;
 
-
             if (selected == null)
             {
                 MessageBox.Show("Selecione um cliente para eliminar");
@@ -264,6 +264,12 @@ namespace ClinicaVeterinariaWPF
 
             if (response.IsSuccess)
             {
+                if(selectedClientId == -1)
+                {
+                    Client createdClient = JsonConvert.DeserializeObject<Client>((string)response.Result);
+                    client.Id = createdClient.Id;
+                }
+
                 foreach (var animal in animalsWithoutClient)
                 {
                     if (animal.ClientId == client.Id)

@@ -66,7 +66,7 @@ namespace ClinicaVeterinariaAPI.Controllers
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.ServiceUnavailable, e.Message));
             }
 
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK));
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, newDoctorSchedule));
         }
 
         // PUT: api/DoctorSchedule/5

@@ -25,5 +25,7 @@ namespace ClinicaVeterinariaWPF.Models
         public string Sex { get; set; }
 
         public int? ClientId { get; set; }
+
+        public string ClientName { get; set; }
     }
 }
