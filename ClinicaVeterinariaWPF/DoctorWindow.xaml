@@ -26,7 +26,7 @@
             <Button x:Name="btnSearch" Content="Procurar" Width="80" Click="btnSearch_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="DataGridResults" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridResults_SelectionChanged">
+        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="2*"/>
                 <DataGridTextColumn Header="Especialidade" Binding="{Binding Speciality}" Width="*"/>
@@ -58,11 +58,11 @@
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Horário Semanal" FontWeight="Bold" Margin="0,0,0,5"/>
 
-                <DataGrid x:Name="DataGridSchedule" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridSchedule_SelectionChanged" Height="180" Margin="0,0,0,10">
+                <DataGrid x:Name="DataGridSchedule" AutoGenerateColumns="False" IsReadOnly="True" Height="180" Margin="0,0,0,10">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Dia" Binding="{Binding DayOfWeek}" Width="1.5*"/>
-                        <DataGridTextColumn Header="Início" Binding="{Binding StartTime}" Width="*"/>
-                        <DataGridTextColumn Header="Fim" Binding="{Binding EndTime}" Width="*"/>
+                        <DataGridTextColumn Header="Início" Binding="{Binding StartDisplay}" Width="*"/>
+                        <DataGridTextColumn Header="Fim" Binding="{Binding EndDisplay}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -78,8 +78,7 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnAddHour" Content="Adicionar Hora" Width="110" Margin="0,0,5,0" Click="btnAddHour_Click"/>
-                    <Button x:Name="btnClearHour" Content="Limpar Hora" Width="100" Margin="0,0,5,0" Click="btnClearHour_Click"/>
+                    <Button x:Name="btnAddHour" Content="Adicionar Horas" Width="110" Margin="0,0,5,0" Click="btnAddHour_Click"/>
                     <Button x:Name="btnDayOff" Content="Folga" Width="70" Click="btnDayOff_Click"/>
                 </StackPanel>
             </StackPanel>
