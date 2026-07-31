@@ -2,9 +2,11 @@
 using ClinicaVeterinariaWPF.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace ClinicaVeterinariaWPF
 {
@@ -142,7 +144,7 @@ namespace ClinicaVeterinariaWPF
             }
             else
             {
-                MessageBox.Show("Nenhum item de procura selecionado");
+                MessageBox.Show("Nenhum item de procura selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -152,7 +154,7 @@ namespace ClinicaVeterinariaWPF
 
             if (selected == null)
             {
-                MessageBox.Show("Nenhum animal selecionado");
+                MessageBox.Show("Nenhum animal selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -216,7 +218,12 @@ namespace ClinicaVeterinariaWPF
 
             if (selected == null)
             {
-                MessageBox.Show("Selecione um animal para eliminar");
+                MessageBox.Show("Selecione um animal para eliminar", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if(selected.ClientId != null)
+            {
+                MessageBox.Show("Animal não pode ser eliminado pois tem um cliente associado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -224,7 +231,7 @@ namespace ClinicaVeterinariaWPF
 
             if (response.IsSuccess)
             {
-                MessageBox.Show("Cliente eliminado");
+                MessageBox.Show("Animal eliminado");
                 ClearForm();
                 await LoadClients();
                 await LoadAnimals();
@@ -242,51 +249,54 @@ namespace ClinicaVeterinariaWPF
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            ComboBoxItem selected = ComboBoxSex.SelectedItem as ComboBoxItem;
-
-            string value = selected.Content.ToString();
-
-            Animal animal = new Animal()
+            if (Validation())
             {
-                Name = TextBoxName.Text,
-                Species = TextBoxSpecies.Text,
-                Breed = TextBoxBreed.Text,
-                Age = Convert.ToInt32(TextBoxAge.Text),
-                Weight = Convert.ToInt32(TextBoxWeight.Text),
-                Color = TextBoxColor.Text,
-                Sex = value
-            };
+                ComboBoxItem selected = ComboBoxSex.SelectedItem as ComboBoxItem;
 
-            Response response;
+                string value = selected.Content.ToString();
 
-            if (selectedAnimalId == -1)
-            {
-                response = await apiService.PostAsync(urlBase, "animal", animal);
-            }
-            else
-            {
-                animal.Id = selectedAnimalId.Value;
-                
-                foreach(var animalEdited in animals)
+                Animal animal = new Animal()
                 {
-                    if(animal.Id == animalEdited.Id)
+                    Name = TextBoxName.Text,
+                    Species = TextBoxSpecies.Text,
+                    Breed = TextBoxBreed.Text,
+                    Age = Convert.ToInt32(TextBoxAge.Text),
+                    Weight = Convert.ToInt32(TextBoxWeight.Text),
+                    Color = TextBoxColor.Text,
+                    Sex = value
+                };
+
+                Response response;
+
+                if (selectedAnimalId == -1)
+                {
+                    response = await apiService.PostAsync(urlBase, "animal", animal);
+                }
+                else
+                {
+                    animal.Id = selectedAnimalId.Value;
+
+                    foreach (var animalEdited in animals)
                     {
-                        animal.ClientId = animalEdited.ClientId;
+                        if (animal.Id == animalEdited.Id)
+                        {
+                            animal.ClientId = animalEdited.ClientId;
+                        }
                     }
+
+                    response = await apiService.PutAsync(urlBase, "animal", animal, selectedAnimalId.Value);
                 }
 
-                response = await apiService.PutAsync(urlBase, "animal", animal, selectedAnimalId.Value);
-            }
-
-            if (response.IsSuccess)
-            {
-                MessageBox.Show("Animal guardado com sucesso");
-                ClearForm();
-                await LoadAnimals();
-            }
-            else
-            {
-                MessageBox.Show("Erro: " + response.Message);
+                if (response.IsSuccess)
+                {
+                    MessageBox.Show("Animal guardado com sucesso");
+                    ClearForm();
+                    await LoadAnimals();
+                }
+                else
+                {
+                    MessageBox.Show("Erro: " + response.Message);
+                }
             }
         }
 
@@ -307,6 +317,47 @@ namespace ClinicaVeterinariaWPF
             ComboBoxSex.SelectedIndex = 2;
 
             DataGridAppointments.ItemsSource = null;
+        }
+
+        private bool Validation()
+        {
+            if (string.IsNullOrEmpty(TextBoxName.Text))
+            {
+                MessageBox.Show("Insira nome do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (string.IsNullOrEmpty(TextBoxSpecies.Text))
+            {
+                MessageBox.Show("Insira a espécie do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (string.IsNullOrEmpty(TextBoxBreed.Text))
+            {
+                MessageBox.Show("Insira a raça do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (!(TextBoxAge.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxAge.Text))
+            {
+                MessageBox.Show("Insira idade válida do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (!(TextBoxWeight.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxWeight.Text))
+            {
+                MessageBox.Show("Insira o peso válido do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (string.IsNullOrEmpty(TextBoxColor.Text) || (TextBoxColor.Text.Any(char.IsDigit)))
+            {
+                MessageBox.Show("Insira a cor do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (ComboBoxSex.SelectedValue == null)
+            {
+                MessageBox.Show("Insira o sexo do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            return true;
         }
     }
 }
