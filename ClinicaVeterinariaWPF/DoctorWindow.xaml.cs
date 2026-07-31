@@ -315,7 +315,7 @@ namespace ClinicaVeterinariaWPF
 
         private void CreateSchedule()
         {
-            string[] days = { "Segunda", "Terça-feira", "Quarta-feira", "Quinta-Feira", "Sexta-feira", "Sábado", "Domingo" };
+            string[] days = { "Domingo", "Segunda", "Terça-feira", "Quarta-feira", "Quinta-Feira", "Sexta-feira", "Sábado"};
 
             daySchedules.Clear();
 

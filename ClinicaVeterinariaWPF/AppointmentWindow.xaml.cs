@@ -20,6 +20,7 @@ namespace ClinicaVeterinariaWPF
         private List<Room> rooms = new List<Room>();
         private List<AppointmentHelper> appointmentHelpers = new List<AppointmentHelper>();
         private List<AppointmentHelper> appointmentHelpersSearch = new List<AppointmentHelper>();
+        private List<DoctorSchedule> doctorSchedules = new List<DoctorSchedule>();
         private int selectedAppointmentId = -1;
 
         public AppointmentWindow()
@@ -144,6 +145,20 @@ namespace ClinicaVeterinariaWPF
             }
         }
 
+        private async Task LoadDoctorSchedules()
+        {
+            var response = await apiService.GetAllAsync<DoctorSchedule>(urlBase, "DoctorSchedule");
+
+            if (response.IsSuccess)
+            {
+                doctorSchedules = (List<DoctorSchedule>)response.Result;
+            }
+            else
+            {
+                MessageBox.Show("Erro ao carregar horário: " + response.Message);
+            }
+        }
+
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             if (ComboBoxSearch.SelectedItem == null && DatePickerSearch.SelectedDate == null)
@@ -264,45 +279,48 @@ namespace ClinicaVeterinariaWPF
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            Animal animal = (Animal)ComboBoxAnimal.SelectedValue;
-            Doctor doctor = (Doctor)ComboBoxDoctor.SelectedValue;
-            Room room = (Room)ComboBoxRoom.SelectedValue;
-
-            Appointment appointment = new Appointment()
+            if (Validation())
             {
-                AnimalId = animal.Id,
-                DoctorId = doctor.Id,
-                RoomId = room.Id,
-                Motive = TextBoxMotive.Text,
-                Treatment = TextBoxTreatment.Text,
-                Canceled = (bool)CheckBoxCanceled.IsChecked,
-                Date = (DateTime)DatePickerDate.SelectedDate,
-                StartTime = ToTimeSpan(TimePickerStart.Value),
-                EndTime = ToTimeSpan(TimePickerEnd.Value),
-            };
+                Animal animal = (Animal)ComboBoxAnimal.SelectedValue;
+                Doctor doctor = (Doctor)ComboBoxDoctor.SelectedValue;
+                Room room = (Room)ComboBoxRoom.SelectedValue;
 
-            Response response;
+                Appointment appointment = new Appointment()
+                {
+                    AnimalId = animal.Id,
+                    DoctorId = doctor.Id,
+                    RoomId = room.Id,
+                    Motive = TextBoxMotive.Text,
+                    Treatment = TextBoxTreatment.Text,
+                    Canceled = (bool)CheckBoxCanceled.IsChecked,
+                    Date = (DateTime)DatePickerDate.SelectedDate,
+                    StartTime = ToTimeSpan(TimePickerStart.Value),
+                    EndTime = ToTimeSpan(TimePickerEnd.Value),
+                };
 
-            if (selectedAppointmentId == -1)
-            {
-                response = await apiService.PostAsync(urlBase, "appointment", appointment);
-            }
-            else
-            {
-                appointment.Id = selectedAppointmentId;
+                Response response;
 
-                response = await apiService.PutAsync(urlBase, "appointment", appointment, selectedAppointmentId);
-            }
+                if (selectedAppointmentId == -1)
+                {
+                    response = await apiService.PostAsync(urlBase, "appointment", appointment);
+                }
+                else
+                {
+                    appointment.Id = selectedAppointmentId;
 
-            if (response.IsSuccess)
-            {
-                MessageBox.Show("Consulta guardada com sucesso");
-                ClearForm();
-                await LoadAppointments();
-            }
-            else
-            {
-                MessageBox.Show("Erro: " + response.Message);
+                    response = await apiService.PutAsync(urlBase, "appointment", appointment, selectedAppointmentId);
+                }
+
+                if (response.IsSuccess)
+                {
+                    MessageBox.Show("Consulta guardada com sucesso");
+                    ClearForm();
+                    await LoadAppointments();
+                }
+                else
+                {
+                    MessageBox.Show("Erro: " + response.Message);
+                }
             }
         }
 
@@ -339,6 +357,147 @@ namespace ClinicaVeterinariaWPF
         private async void btnAllList_Click(object sender, RoutedEventArgs e)
         {
             await LoadAppointments();
+        }
+
+        private bool Validation()
+        {
+            if (ComboBoxAnimal.SelectedValue == null)
+            {
+                MessageBox.Show("Insira um animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (ComboBoxDoctor.SelectedValue == null)
+            {
+                MessageBox.Show("Insira um doutor", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (ComboBoxRoom.SelectedValue == null)
+            {
+                MessageBox.Show("Insira uma sala", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (string.IsNullOrEmpty(TextBoxMotive.Text))
+            {
+                MessageBox.Show("Insira um motivo válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (string.IsNullOrEmpty(TextBoxTreatment.Text))
+            {
+                MessageBox.Show("Insira um tratamento válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (DatePickerDate.SelectedDate == null)
+            {
+                MessageBox.Show("Insira uma data válida", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (TimePickerStart.Value == null)
+            {
+                MessageBox.Show("Insira uma hora de início válida", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (TimePickerEnd.Value == null)
+            {
+                MessageBox.Show("Insira uma hora de fim válida", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            DateTime date = (DateTime)DatePickerDate.SelectedDate;
+            TimeSpan start = ToTimeSpan(TimePickerStart.Value);
+            TimeSpan end = ToTimeSpan(TimePickerEnd.Value);
+
+            Animal animal = (Animal)ComboBoxAnimal.SelectedValue;
+            Doctor doctor = (Doctor)ComboBoxDoctor.SelectedValue;
+            Room room = (Room)ComboBoxRoom.SelectedValue;
+            List<DoctorSchedule> doctorSchedulesValidation = new List<DoctorSchedule>();
+
+            if (start >= end)
+            {
+                MessageBox.Show("Horário inválido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            foreach (var doctorSchedule in doctorSchedules)
+            {
+                if (doctorSchedule.DoctorId == doctor.Id)
+                {
+                    doctorSchedulesValidation.Add(doctorSchedule);
+                }
+            }
+
+            if (CheckBoxCanceled.IsChecked == false)
+            {
+                foreach (Appointment appointment in appointments)
+                {
+                    if(animal.Id == appointment.AnimalId)
+                    {
+                        if (appointment.Date == date && appointment.Canceled == false)
+                        {
+                            if (start < appointment.EndTime && end > appointment.StartTime)
+                            {
+                                MessageBox.Show("O animal já tem marcação neste horário", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                bool  doesntWork = true;
+
+                foreach(var doctorSchedule in doctorSchedulesValidation)
+                {
+                    if ((doctorSchedule.StartTime != TimeSpan.Zero && doctorSchedule.EndTime != TimeSpan.Zero) && doctorSchedule.DayOfWeek == (byte)date.DayOfWeek)
+                    {
+                        doesntWork = false;
+
+                        if (start >= doctorSchedule.StartTime && end <= doctorSchedule.EndTime)
+                        {
+                            foreach (Appointment appointment in appointments)
+                            {
+                                if(appointment.DoctorId == doctor.Id)
+                                {
+                                    if (appointment.Date == date && appointment.Canceled == false)
+                                    {
+                                        if (start < appointment.EndTime && end > appointment.StartTime)
+                                        {
+                                            MessageBox.Show("O doutor já tem marcação neste horário", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("O doutor não trabalha nesse horário", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return false;
+                        }
+                    }
+                }
+
+                if (doesntWork)
+                {
+                    MessageBox.Show("O doutor não trabalha nesse dia", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+
+                foreach (Appointment appointment in appointments)
+                {
+                    if(appointment.RoomId == room.Id)
+                    {
+                        if (appointment.Date == date && appointment.Canceled == false)
+                        {
+                            if (start < appointment.EndTime && end > appointment.StartTime)
+                            {
+                                MessageBox.Show("Esta sala está ocupada no horário selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }
