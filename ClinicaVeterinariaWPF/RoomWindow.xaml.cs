@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace ClinicaVeterinariaWPF
 {
@@ -17,6 +18,7 @@ namespace ClinicaVeterinariaWPF
         private int? selectedRoomId = -1;
         private List<Room> rooms = new List<Room>();
         private List<Room> searchRooms = new List<Room>();
+        private List<Appointment> appointments = new List<Appointment>();
 
         public RoomWindow()
         {
@@ -27,6 +29,7 @@ namespace ClinicaVeterinariaWPF
         private async void RoomWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadRooms();
+            await LoadAppointments();
         }
 
         private async Task LoadRooms()
@@ -41,6 +44,20 @@ namespace ClinicaVeterinariaWPF
             else
             {
                 MessageBox.Show("Erro ao carregar sala: " + response.Message);
+            }
+        }
+
+        private async Task LoadAppointments()
+        {
+            var response = await apiService.GetAllAsync<Appointment>(urlBase, "Appointment");
+
+            if (response.IsSuccess)
+            {
+                appointments = (List<Appointment>)response.Result;
+            }
+            else
+            {
+                MessageBox.Show("Erro ao carregar consulta: " + response.Message);
             }
         }
 
@@ -72,7 +89,7 @@ namespace ClinicaVeterinariaWPF
             }
             else
             {
-                MessageBox.Show("Nenhum item de procura selecionado");
+                MessageBox.Show("Nenhum item de procura selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -82,7 +99,7 @@ namespace ClinicaVeterinariaWPF
 
             if (selected == null)
             {
-                MessageBox.Show("Nenhuma sala selecionada");
+                MessageBox.Show("Nenhuma sala selecionada", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -102,8 +119,17 @@ namespace ClinicaVeterinariaWPF
 
             if (selected == null)
             {
-                MessageBox.Show("Selecione um cliente para eliminar");
+                MessageBox.Show("Selecione uma sala para eliminar", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
+            }
+
+            foreach(var appointment in appointments)
+            {
+                if(appointment.RoomId == selected.Id)
+                {
+                    MessageBox.Show("Esta sala tem consultas marcadas e não pode ser eliminada", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
 
             var response = await apiService.DeleteAsync(urlBase, "room", selected.Id);
@@ -111,7 +137,7 @@ namespace ClinicaVeterinariaWPF
             if (response.IsSuccess)
             {
                 MessageBox.Show("Sala eliminada");
-                ClearForm();
+                ClearTools();
                 await LoadRooms();
             }
             else
@@ -122,59 +148,62 @@ namespace ClinicaVeterinariaWPF
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
-            ClearForm();
+            ClearTools();
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            Room room = new Room()
+            if (Validation())
             {
-                Type = TextBoxType.Text,
-                UnderMaintenance = (bool)CheckBoxUnderMaintenance.IsChecked
-            };
-
-            bool responsePost = false;
-            Response response;
-
-            if (selectedRoomId == -1)
-            {
-                response = await apiService.PostAsync(urlBase, "room", room);
-                responsePost = true;
-            }
-            else
-            {
-                room.Id = selectedRoomId.Value;
-                response = await apiService.PutAsync(urlBase, "room", room, selectedRoomId.Value);
-                responsePost = false;
-            }
-
-            if (response.IsSuccess)
-            {
-                await LoadRooms();
-
-                if (responsePost)
+                Room room = new Room()
                 {
-                    int maxId = 0;
+                    Type = TextBoxType.Text,
+                    UnderMaintenance = (bool)CheckBoxUnderMaintenance.IsChecked
+                };
 
-                    foreach (var roomMax in rooms)
-                    {
-                        if (roomMax.Id > maxId)
-                        {
-                            maxId = roomMax.Id;
-                        }
-                    }
+                bool responsePost = false;
+                Response response;
 
-                    MessageBox.Show($"Sala guardada com sucesso\n\nID da nova sala: {maxId}");
+                if (selectedRoomId == -1)
+                {
+                    response = await apiService.PostAsync(urlBase, "room", room);
+                    responsePost = true;
                 }
                 else
                 {
-                    MessageBox.Show("Sala guardada com sucesso");
+                    room.Id = selectedRoomId.Value;
+                    response = await apiService.PutAsync(urlBase, "room", room, selectedRoomId.Value);
+                    responsePost = false;
                 }
-                ClearForm();
-            }
-            else
-            {
-                MessageBox.Show("Erro: " + response.Message);
+
+                if (response.IsSuccess)
+                {
+                    await LoadRooms();
+
+                    if (responsePost)
+                    {
+                        int maxId = 0;
+
+                        foreach (var roomMax in rooms)
+                        {
+                            if (roomMax.Id > maxId)
+                            {
+                                maxId = roomMax.Id;
+                            }
+                        }
+
+                        MessageBox.Show($"Sala guardada com sucesso\n\nID da nova sala: {maxId}");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Sala guardada com sucesso");
+                    }
+                    ClearTools();
+                }
+                else
+                {
+                    MessageBox.Show("Erro: " + response.Message);
+                }
             }
         }
 
@@ -183,12 +212,23 @@ namespace ClinicaVeterinariaWPF
 
         }
 
-        private void ClearForm()
+        private void ClearTools()
         {
             selectedRoomId = -1;
             TextBoxRoomNumber.Text = "";
             TextBoxType.Text = "";
             CheckBoxUnderMaintenance.IsChecked = false;
+        }
+
+        private bool Validation()
+        {
+            if (string.IsNullOrEmpty(TextBoxType.Text))
+            {
+                MessageBox.Show("Insira o tipo da sala", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            return true;
         }
     }
 }
