@@ -3,8 +3,10 @@ using ClinicaVeterinariaWPF.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace ClinicaVeterinariaWPF
 {
@@ -15,6 +17,7 @@ namespace ClinicaVeterinariaWPF
         private int? selectedClientId = -1;
         private List<Client> clients = new List<Client>();
         private List<Client> searchClients = new List<Client>();
+        private List<Animal> animals = new List<Animal>();
         private List<Animal> animalsClient = new List<Animal>();
         private List<Animal> animalsWithoutClient = new List<Animal>();
 
@@ -52,7 +55,7 @@ namespace ClinicaVeterinariaWPF
 
             if (response.IsSuccess)
             {
-                List<Animal> animals = (List<Animal>)response.Result;
+                animals = (List<Animal>)response.Result;
 
                 animalsWithoutClient.Clear();
                 animalsClient.Clear();
@@ -83,7 +86,7 @@ namespace ClinicaVeterinariaWPF
 
         private async void btnNew_Click(object sender, RoutedEventArgs e)
         {
-            ClearForm();
+            ClearTools();
             await LoadAnimals();
         }
 
@@ -135,7 +138,7 @@ namespace ClinicaVeterinariaWPF
             }
             else
             {
-                MessageBox.Show("Nenhum item de procura selecionado");
+                MessageBox.Show("Nenhum item de procura selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -145,7 +148,7 @@ namespace ClinicaVeterinariaWPF
 
             if (selected == null)
             {
-                MessageBox.Show("Nenhum cliente selecionado");
+                MessageBox.Show("Nenhum cliente selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -166,7 +169,7 @@ namespace ClinicaVeterinariaWPF
 
             if (selectedAnimal == null)
             {
-                MessageBox.Show("Nenhum animal selecionado");
+                MessageBox.Show("Nenhum animal selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -182,7 +185,7 @@ namespace ClinicaVeterinariaWPF
 
             if (selectedAnimal == null)
             {
-                MessageBox.Show("Nenhum animal selecionado");
+                MessageBox.Show("Nenhum animal selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -192,20 +195,12 @@ namespace ClinicaVeterinariaWPF
             }
         }
 
-        private void ClearForm()
-        {
-            selectedClientId = -1;
-            TextBoxName.Text = "";
-            TextBoxAddress.Text = "";
-            TextBoxNif.Text = "";
-            TextBoxPhoneNumber.Text = "";
-            TextBoxEmail.Text = "";
-        }
-
         private void UpdateListBox()
         {
-            ListBoxAvailableAnimals.Items.Refresh();
-            ListBoxClientAnimals.Items.Refresh();
+            ListBoxAvailableAnimals.ItemsSource = null;
+            ListBoxAvailableAnimals.ItemsSource = animalsWithoutClient;
+            ListBoxClientAnimals.ItemsSource = null;
+            ListBoxClientAnimals.ItemsSource = animalsClient;
         }
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -214,8 +209,16 @@ namespace ClinicaVeterinariaWPF
 
             if (selected == null)
             {
-                MessageBox.Show("Selecione um cliente para eliminar");
+                MessageBox.Show("Selecione um cliente para eliminar", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
+            }
+            foreach(var animal in animals)
+            {
+                if(animal.ClientId == selected.Id)
+                {
+                    MessageBox.Show("Este cliente não pode ser eliminado porque tem animais associados", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
 
             var response = await apiService.DeleteAsync(urlBase, "client", selected.Id);
@@ -223,7 +226,7 @@ namespace ClinicaVeterinariaWPF
             if (response.IsSuccess)
             {
                 MessageBox.Show("Cliente eliminado");
-                ClearForm();
+                ClearTools();
                 await LoadClients();
                 await LoadAnimals();
             }
@@ -235,59 +238,107 @@ namespace ClinicaVeterinariaWPF
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            Client client = new Client()
+            if (Validation())
             {
-                Name = TextBoxName.Text,
-                Address = TextBoxAddress.Text,
-                Nif = TextBoxNif.Text,
-                PhoneNumber = TextBoxPhoneNumber.Text,
-                Email = TextBoxEmail.Text,
-            };
-
-            Response response;
-
-            if (selectedClientId == -1)
-            {
-                response = await apiService.PostAsync(urlBase, "client", client);
-            }
-            else
-            {
-                client.Id = selectedClientId.Value;
-                response = await apiService.PutAsync(urlBase, "client", client, selectedClientId.Value);
-            }
-
-            if (response.IsSuccess)
-            {
-                if(selectedClientId == -1)
+                Client client = new Client()
                 {
-                    Client createdClient = JsonConvert.DeserializeObject<Client>((string)response.Result);
-                    client.Id = createdClient.Id;
+                    Name = TextBoxName.Text,
+                    Address = TextBoxAddress.Text,
+                    Nif = TextBoxNif.Text,
+                    PhoneNumber = TextBoxPhoneNumber.Text,
+                    Email = TextBoxEmail.Text,
+                };
+
+                Response response;
+
+                if (selectedClientId == -1)
+                {
+                    response = await apiService.PostAsync(urlBase, "client", client);
+                }
+                else
+                {
+                    client.Id = selectedClientId.Value;
+                    response = await apiService.PutAsync(urlBase, "client", client, selectedClientId.Value);
                 }
 
-                foreach (var animal in animalsWithoutClient)
+                if (response.IsSuccess)
                 {
-                    if (animal.ClientId == client.Id)
+                    if (selectedClientId == -1)
                     {
-                        animal.ClientId = null;
+                        Client createdClient = JsonConvert.DeserializeObject<Client>((string)response.Result);
+                        client.Id = createdClient.Id;
+                    }
+
+                    foreach (var animal in animalsWithoutClient)
+                    {
+                        if (animal.ClientId == client.Id)
+                        {
+                            animal.ClientId = null;
+                            response = await apiService.PutAsync(urlBase, "animal", animal, animal.Id);
+                        }
+                    }
+
+                    foreach (var animal in animalsClient)
+                    {
+                        animal.ClientId = client.Id;
                         response = await apiService.PutAsync(urlBase, "animal", animal, animal.Id);
                     }
-                }
 
-                foreach (var animal in animalsClient)
+                    MessageBox.Show("Cliente guardado com sucesso");
+                    ClearTools();
+                    await LoadClients();
+                    await LoadAnimals();
+                }
+                else
                 {
-                    animal.ClientId = client.Id;
-                    response = await apiService.PutAsync(urlBase, "animal", animal, animal.Id);
+                    MessageBox.Show("Erro: " + response.Message);
                 }
+            }
+        }
 
-                MessageBox.Show("Cliente guardado com sucesso");
-                ClearForm();
-                await LoadClients();
-                await LoadAnimals();
-            }
-            else
+        private void ClearTools()
+        {
+            selectedClientId = -1;
+            TextBoxName.Text = "";
+            TextBoxAddress.Text = "";
+            TextBoxNif.Text = "";
+            TextBoxPhoneNumber.Text = "";
+            TextBoxEmail.Text = "";
+        }
+
+        private bool Validation()
+        {
+            if (string.IsNullOrEmpty(TextBoxName.Text))
             {
-                MessageBox.Show("Erro: " + response.Message);
+                MessageBox.Show("Insira nome do cliente", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
+
+            if (string.IsNullOrEmpty(TextBoxAddress.Text))
+            {
+                MessageBox.Show("Insira a morada do cliente", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(TextBoxNif.Text) || !(TextBoxNif.Text.All(char.IsDigit)))
+            {
+                MessageBox.Show("Insira um NIF válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(TextBoxPhoneNumber.Text) || !(TextBoxPhoneNumber.Text.All(char.IsDigit)))
+            {
+                MessageBox.Show("Insira um número de telefone válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(TextBoxEmail.Text) || !(TextBoxEmail.Text.Contains("@")))
+            {
+                MessageBox.Show("Insira um E-Mail válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            return true;
         }
     }
 }
