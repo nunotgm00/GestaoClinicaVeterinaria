@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="Models\Animal.cs" />
     <Compile Include="Models\Appointment.cs" />
+    <Compile Include="Models\AppointmentHelper.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\DaySchedule.cs" />
     <Compile Include="Models\Doctor.cs" />

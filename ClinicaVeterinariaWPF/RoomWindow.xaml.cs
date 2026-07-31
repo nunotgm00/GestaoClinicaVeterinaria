@@ -57,8 +57,7 @@ namespace ClinicaVeterinariaWPF
                         searchRooms.Add(room);
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchRooms;
+                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 1)
             {
@@ -69,8 +68,7 @@ namespace ClinicaVeterinariaWPF
                         searchRooms.Add(room);
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchRooms;
+                DataGridSearch.Items.Refresh();
             }
             else
             {

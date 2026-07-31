@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
         mc:Ignorable="d"
-        Title="AppointmentWindow" Height="700" Width="850">
+        Title="AppointmentWindow" Height="600" Width="850">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -21,27 +21,27 @@
             <ComboBox x:Name="ComboBoxSearch" Width="120" Margin="0,0,10,0">
                 <ComboBoxItem Content="Animal"/>
                 <ComboBoxItem Content="Doutor"/>
-                <ComboBoxItem Content="Data"/>
             </ComboBox>
-            <TextBox x:Name="TextBoxName" Width="150" Margin="0,0,10,0"/>
-            <TextBlock Text="ou escolha o dia:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="TextBoxSearch" Width="150" Margin="0,0,10,0"/>
+            <TextBlock Text="e/ou escolha o dia:" VerticalAlignment="Center" Margin="0,0,5,0"/>
             <DatePicker x:Name="DatePickerSearch" Width="130" Margin="0,0,10,0"/>
-            <Button x:Name="btnSearch" Content="Procurar" Width="80" Click="btnSearch_Click"/>
+            <Button x:Name="btnSearch" Content="Procurar" Width="80" Margin="0,0,10,0" Click="btnSearch_Click"/>
+            <Button x:Name="btnCleanDate" Content="Limpar Data" Width="80" Click="btnCleanDate_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="true" SelectionChanged="DataGridSearch_SelectionChanged">
+        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="true">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Data" Binding="{Binding Date}" Width="*"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding DateTimeDisplay}" Width="*"/>
                 <DataGridTextColumn Header="Animal" Binding="{Binding AnimalName}" Width="*"/>
                 <DataGridTextColumn Header="Doutor" Binding="{Binding DoctorName}" Width="*"/>
-                <DataGridTextColumn Header="Sala" Binding="{Binding RoomId}" Width="60"/>
-                <DataGridTextColumn Header="Cancelada" Binding="{Binding Cancelada}" Width="80"/>
+                <DataGridTextColumn Header="Sala" Binding="{Binding RoomName}" Width="60"/>
+                <DataGridTextColumn Header="Cancelada" Binding="{Binding Canceled}" Width="80"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button x:Name="btnEdit" Content="Editar" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
-            <Button x:Name="btnDelete" Content="Eliminar" Width="80" Click="btnDelete_Click"/>
+            <Button x:Name="btnEdit" Content="Editar" Width="90" Margin="0,0,10,0" Click="btnEdit_Click"/>
+            <Button x:Name="btnAllList" Content="Lista Completa" Width="90" Margin="0,0,10,0" Click="btnAllList_Click"/>
         </StackPanel>
 
         <Grid Grid.Row="3">
@@ -56,7 +56,7 @@
                 <TextBlock Text="Doutor"/>
                 <ComboBox x:Name="ComboBoxDoctor" DisplayMemberPath="Name" Margin="0,0,0,5"/>
                 <TextBlock Text="Sala"/>
-                <ComboBox x:Name="ComboBoxRoom" DisplayMemberPath="Id" Margin="0,0,0,5"/>
+                <ComboBox x:Name="ComboBoxRoom" DisplayMemberPath="RoomName" Margin="0,0,0,5"/>
                 <TextBlock Text="Motivo"/>
                 <TextBox x:Name="TextBoxMotive" Margin="0,0,0,5"/>
                 <TextBlock Text="Tratamento"/>

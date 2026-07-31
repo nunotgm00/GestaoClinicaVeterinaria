@@ -13,5 +13,14 @@ namespace ClinicaVeterinariaWPF.Models
         public string Type { get; set; }
 
         public bool UnderMaintenance { get; set; }
+
+        public string RoomName 
+        { 
+            get
+            {
+                return "Sala " + Id.ToString();
+            }
+
+        }
     }
 }

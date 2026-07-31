@@ -21,6 +21,7 @@ namespace ClinicaVeterinariaWPF
         private List<Client> clients = new List<Client>();
         private List<Appointment> appointments = new List<Appointment>();
         private List<Appointment> appointmentsAnimal = new List<Appointment>();
+        private List<AppointmentHelper> appointmentHelpers = new List<AppointmentHelper>();
 
         public AnimalWindow()
         {
@@ -109,8 +110,7 @@ namespace ClinicaVeterinariaWPF
                         searchAnimals.Add(animal);
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchAnimals;
+                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 1)
             {
@@ -121,8 +121,7 @@ namespace ClinicaVeterinariaWPF
                         searchAnimals.Add(animal);
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchAnimals;
+                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 2)
             {
@@ -139,8 +138,7 @@ namespace ClinicaVeterinariaWPF
                         }
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchAnimals;
+                DataGridSearch.Items.Refresh();
             }
             else
             {
@@ -179,17 +177,34 @@ namespace ClinicaVeterinariaWPF
                 }
 
                 appointmentsAnimal.Clear();
+                appointmentHelpers.Clear();
 
                 foreach (var appointment in appointments)
                 {
                     if (appointment.AnimalId == selectedAnimalId)
                     {
                         appointmentsAnimal.Add(appointment);
+
+                        foreach(var appointment2 in appointmentsAnimal)
+                        {
+                            AppointmentHelper appointmentHelper = new AppointmentHelper()
+                            {
+                                Date = appointment2.Date,
+                                StartTime = appointment2.StartTime,
+                                EndTime = appointment2.EndTime,
+                                Motive = appointment2.Motive,
+                                RoomName = "Sala " + appointment2.RoomId,
+                            };
+
+                            appointmentHelpers.Add(appointmentHelper);
+                        }
                     }
                 }
 
                 DataGridAppointments.ItemsSource = null;
-                DataGridAppointments.ItemsSource = appointmentsAnimal;
+                DataGridAppointments.ItemsSource = appointmentHelpers;
+
+                DataGridSearch.Items.Refresh();
 
                 await LoadAnimals();
             }

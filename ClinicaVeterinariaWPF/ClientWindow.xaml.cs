@@ -109,8 +109,7 @@ namespace ClinicaVeterinariaWPF
                         searchClients.Add(client);
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchClients;
+                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 1)
             {
@@ -121,8 +120,7 @@ namespace ClinicaVeterinariaWPF
                         searchClients.Add(client);
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchClients;
+                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 2)
             {
@@ -133,8 +131,7 @@ namespace ClinicaVeterinariaWPF
                         searchClients.Add(client);
                     }
                 }
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = searchClients;
+                DataGridSearch.Items.Refresh();
             }
             else
             {
@@ -207,11 +204,8 @@ namespace ClinicaVeterinariaWPF
 
         private void UpdateListBox()
         {
-            ListBoxAvailableAnimals.ItemsSource = null;
-            ListBoxClientAnimals.ItemsSource = null;
-
-            ListBoxAvailableAnimals.ItemsSource = animalsWithoutClient;
-            ListBoxClientAnimals.ItemsSource = animalsClient;
+            ListBoxAvailableAnimals.Items.Refresh();
+            ListBoxClientAnimals.Items.Refresh();
         }
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
