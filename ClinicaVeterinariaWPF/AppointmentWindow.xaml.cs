@@ -354,11 +354,6 @@ namespace ClinicaVeterinariaWPF
             DatePickerSearch.SelectedDate = null;
         }
 
-        private async void btnAllList_Click(object sender, RoutedEventArgs e)
-        {
-            await LoadAppointments();
-        }
-
         private bool Validation()
         {
             if (ComboBoxAnimal.SelectedValue == null)
@@ -498,6 +493,11 @@ namespace ClinicaVeterinariaWPF
             }
 
             return true;
+        }
+
+        private async void btnAllList_Click(object sender, RoutedEventArgs e)
+        {
+            await LoadAppointments();
         }
     }
 }

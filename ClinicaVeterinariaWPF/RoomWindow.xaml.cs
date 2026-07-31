@@ -230,5 +230,10 @@ namespace ClinicaVeterinariaWPF
 
             return true;
         }
+
+        private async void btnAllList_Click(object sender, RoutedEventArgs e)
+        {
+            await LoadRooms();
+        }
     }
 }

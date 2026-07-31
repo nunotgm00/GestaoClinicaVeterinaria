@@ -40,8 +40,8 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button x:Name="btnEdit" Content="Editar" Width="90" Margin="0,0,10,0" Click="btnEdit_Click"/>
-            <Button x:Name="btnAllList" Content="Lista Completa" Width="90" Margin="0,0,10,0" Click="btnAllList_Click"/>
+            <Button x:Name="btnAllList" Content="Lista Completa" Width="100" Margin="0,0,10,0" Click="btnAllList_Click"/>
+            <Button x:Name="btnEdit" Content="Editar" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
         </StackPanel>
 
         <Grid Grid.Row="3">

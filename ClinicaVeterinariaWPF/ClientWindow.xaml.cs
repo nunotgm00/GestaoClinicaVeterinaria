@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 
 namespace ClinicaVeterinariaWPF
 {
@@ -14,7 +13,7 @@ namespace ClinicaVeterinariaWPF
     {
         private readonly ApiService apiService = new ApiService();
         private const string urlBase = "http://gestaoclinicaveterinariaapi.somee.com/api";
-        private int? selectedClientId = -1;
+        private int selectedClientId = -1;
         private List<Client> clients = new List<Client>();
         private List<Client> searchClients = new List<Client>();
         private List<Animal> animals = new List<Animal>();
@@ -70,7 +69,7 @@ namespace ClinicaVeterinariaWPF
 
                 foreach (var animal in animals)
                 {
-                    if(animal.ClientId == selectedClientId)
+                    if (animal.ClientId == selectedClientId)
                     {
                         animalsClient.Add(animal);
                     }
@@ -103,6 +102,12 @@ namespace ClinicaVeterinariaWPF
         {
             searchClients.Clear();
 
+            if (ComboBoxSearch.SelectedValue == null)
+            {
+                MessageBox.Show("Nenhum item de procura selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (ComboBoxSearch.SelectedIndex == 0)
             {
                 foreach (var client in clients)
@@ -112,7 +117,6 @@ namespace ClinicaVeterinariaWPF
                         searchClients.Add(client);
                     }
                 }
-                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 1)
             {
@@ -123,7 +127,6 @@ namespace ClinicaVeterinariaWPF
                         searchClients.Add(client);
                     }
                 }
-                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 2)
             {
@@ -134,12 +137,10 @@ namespace ClinicaVeterinariaWPF
                         searchClients.Add(client);
                     }
                 }
-                DataGridSearch.Items.Refresh();
             }
-            else
-            {
-                MessageBox.Show("Nenhum item de procura selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
+            DataGridSearch.ItemsSource = null;
+            DataGridSearch.ItemsSource = searchClients;
         }
 
         private async void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -212,14 +213,16 @@ namespace ClinicaVeterinariaWPF
                 MessageBox.Show("Selecione um cliente para eliminar", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            foreach(var animal in animals)
+            foreach (var animal in animals)
             {
-                if(animal.ClientId == selected.Id)
+                if (animal.ClientId == selected.Id)
                 {
                     MessageBox.Show("Este cliente não pode ser eliminado porque tem animais associados", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
+
+            DeactivateButtons();
 
             var response = await apiService.DeleteAsync(urlBase, "client", selected.Id);
 
@@ -234,12 +237,16 @@ namespace ClinicaVeterinariaWPF
             {
                 MessageBox.Show("Erro: " + response.Message);
             }
+
+            ActivateButtons();
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (Validation())
             {
+                DeactivateButtons();
+
                 Client client = new Client()
                 {
                     Name = TextBoxName.Text,
@@ -257,8 +264,8 @@ namespace ClinicaVeterinariaWPF
                 }
                 else
                 {
-                    client.Id = selectedClientId.Value;
-                    response = await apiService.PutAsync(urlBase, "client", client, selectedClientId.Value);
+                    client.Id = selectedClientId;
+                    response = await apiService.PutAsync(urlBase, "client", client, selectedClientId);
                 }
 
                 if (response.IsSuccess)
@@ -293,6 +300,8 @@ namespace ClinicaVeterinariaWPF
                 {
                     MessageBox.Show("Erro: " + response.Message);
                 }
+
+                ActivateButtons();
             }
         }
 
@@ -320,7 +329,7 @@ namespace ClinicaVeterinariaWPF
                 return false;
             }
 
-            if (string.IsNullOrEmpty(TextBoxNif.Text) || !(TextBoxNif.Text.All(char.IsDigit)))
+            if (TextBoxNif.Text.Length != 9 || !(TextBoxNif.Text.All(char.IsDigit)))
             {
                 MessageBox.Show("Insira um NIF válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -339,6 +348,35 @@ namespace ClinicaVeterinariaWPF
             }
 
             return true;
+        }
+
+        private void DeactivateButtons()
+        {
+            btnSearch.IsEnabled = false;
+            btnEdit.IsEnabled = false;
+            btnDelete.IsEnabled = false;
+            btnNew.IsEnabled = false;
+            btnSave.IsEnabled = false;
+            btnClose.IsEnabled = false;
+            btnAddAnimal.IsEnabled = false;
+            btnRemoveAnimal.IsEnabled = false;
+        }
+
+        private void ActivateButtons()
+        {
+            btnSearch.IsEnabled = true;
+            btnEdit.IsEnabled = true;
+            btnDelete.IsEnabled = true;
+            btnNew.IsEnabled = true;
+            btnSave.IsEnabled = true;
+            btnClose.IsEnabled = true;
+            btnAddAnimal.IsEnabled = true;
+            btnRemoveAnimal.IsEnabled = true;
+        }
+
+        private async void btnAllList_Click(object sender, RoutedEventArgs e)
+        {
+            await LoadClients();
         }
     }
 }
