@@ -2,20 +2,17 @@
 using ClinicaVeterinariaWPF.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 
 namespace ClinicaVeterinariaWPF
 {
-    /// <summary>
-    /// Interaction logic for RoomWindow.xaml
-    /// </summary>
     public partial class RoomWindow : Window
     {
-        private ApiService apiService = new ApiService();
+        private readonly ApiService apiService = new ApiService();
         private const string urlBase = "http://gestaoclinicaveterinariaapi.somee.com/api";
-        private int? selectedRoomId = -1;
+        private int selectedRoomId = -1;
         private List<Room> rooms = new List<Room>();
         private List<Room> searchRooms = new List<Room>();
         private List<Appointment> appointments = new List<Appointment>();
@@ -65,16 +62,25 @@ namespace ClinicaVeterinariaWPF
         {
             searchRooms.Clear();
 
+            if (ComboBoxSearch.SelectedValue == null)
+            {
+                MessageBox.Show("Nenhum item de procura selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (ComboBoxSearch.SelectedIndex == 0)
             {
                 foreach (var room in rooms)
                 {
+                    if(!(TextBoxSearch.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxSearch.Text))
+                    {
+                        MessageBox.Show("Insira apenas números", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                     if (room.Id == Convert.ToInt32(TextBoxSearch.Text))
                     {
                         searchRooms.Add(room);
                     }
                 }
-                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 1)
             {
@@ -85,12 +91,10 @@ namespace ClinicaVeterinariaWPF
                         searchRooms.Add(room);
                     }
                 }
-                DataGridSearch.Items.Refresh();
             }
-            else
-            {
-                MessageBox.Show("Nenhum item de procura selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
+            DataGridSearch.ItemsSource = null;
+            DataGridSearch.ItemsSource = searchRooms;
         }
 
         private async void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -107,8 +111,6 @@ namespace ClinicaVeterinariaWPF
                 TextBoxRoomNumber.Text = selected.Id.ToString();
                 TextBoxType.Text = selected.Type;
                 CheckBoxUnderMaintenance.IsChecked = selected.UnderMaintenance;
-
-                await LoadRooms();
             }
         }
 
@@ -116,21 +118,22 @@ namespace ClinicaVeterinariaWPF
         {
             Room selected = DataGridSearch.SelectedItem as Room;
 
-
             if (selected == null)
             {
                 MessageBox.Show("Selecione uma sala para eliminar", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            foreach(var appointment in appointments)
+            foreach (var appointment in appointments)
             {
-                if(appointment.RoomId == selected.Id)
+                if (appointment.RoomId == selected.Id)
                 {
                     MessageBox.Show("Esta sala tem consultas marcadas e não pode ser eliminada", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
+
+            DeactivateButtons();
 
             var response = await apiService.DeleteAsync(urlBase, "room", selected.Id);
 
@@ -144,6 +147,8 @@ namespace ClinicaVeterinariaWPF
             {
                 MessageBox.Show("Erro: " + response.Message);
             }
+
+            ActivateButtons();
         }
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
@@ -155,6 +160,8 @@ namespace ClinicaVeterinariaWPF
         {
             if (Validation())
             {
+                DeactivateButtons();
+
                 Room room = new Room()
                 {
                     Type = TextBoxType.Text,
@@ -171,8 +178,8 @@ namespace ClinicaVeterinariaWPF
                 }
                 else
                 {
-                    room.Id = selectedRoomId.Value;
-                    response = await apiService.PutAsync(urlBase, "room", room, selectedRoomId.Value);
+                    room.Id = selectedRoomId;
+                    response = await apiService.PutAsync(urlBase, "room", room, selectedRoomId);
                     responsePost = false;
                 }
 
@@ -204,6 +211,8 @@ namespace ClinicaVeterinariaWPF
                 {
                     MessageBox.Show("Erro: " + response.Message);
                 }
+
+                ActivateButtons();
             }
         }
 
@@ -229,6 +238,24 @@ namespace ClinicaVeterinariaWPF
             }
 
             return true;
+        }
+
+        private void DeactivateButtons()
+        {
+            btnSearch.IsEnabled = false;
+            btnEdit.IsEnabled = false;
+            btnNew.IsEnabled = false;
+            btnSave.IsEnabled = false;
+            btnClose.IsEnabled = false;
+        }
+
+        private void ActivateButtons()
+        {
+            btnSearch.IsEnabled = true;
+            btnEdit.IsEnabled = true;
+            btnNew.IsEnabled = true;
+            btnSave.IsEnabled = true;
+            btnClose.IsEnabled = true;
         }
 
         private async void btnAllList_Click(object sender, RoutedEventArgs e)

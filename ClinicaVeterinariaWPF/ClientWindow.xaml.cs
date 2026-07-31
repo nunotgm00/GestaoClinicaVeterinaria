@@ -65,10 +65,7 @@ namespace ClinicaVeterinariaWPF
                     {
                         animalsWithoutClient.Add(animal);
                     }
-                }
 
-                foreach (var animal in animals)
-                {
                     if (animal.ClientId == selectedClientId)
                     {
                         animalsClient.Add(animal);
@@ -91,11 +88,6 @@ namespace ClinicaVeterinariaWPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            //
-            //
-            // TO DO
-            //
-            //
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -291,10 +283,17 @@ namespace ClinicaVeterinariaWPF
                         response = await apiService.PutAsync(urlBase, "animal", animal, animal.Id);
                     }
 
-                    MessageBox.Show("Cliente guardado com sucesso");
-                    ClearTools();
-                    await LoadClients();
-                    await LoadAnimals();
+                    if (response.IsSuccess)
+                    {
+                        MessageBox.Show("Cliente guardado com sucesso");
+                        ClearTools();
+                        await LoadClients();
+                        await LoadAnimals();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro: " + response.Message);
+                    }
                 }
                 else
                 {

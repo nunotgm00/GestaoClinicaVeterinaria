@@ -6,18 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 
 namespace ClinicaVeterinariaWPF
 {
-    /// <summary>
-    /// Interaction logic for DoctorWindow.xaml
-    /// </summary>
     public partial class DoctorWindow : Window
     {
         private readonly ApiService apiService = new ApiService();
         private const string urlBase = "http://gestaoclinicaveterinariaapi.somee.com/api";
-        private int? selectedDoctorId = -1;
+        private int selectedDoctorId = -1;
         private List<Doctor> doctors = new List<Doctor>();
         private List<Doctor> searchDoctors = new List<Doctor>();
         private List<Appointment> appointments = new List<Appointment>();
@@ -84,6 +80,11 @@ namespace ClinicaVeterinariaWPF
         {
             searchDoctors.Clear();
 
+            if (ComboBoxSearch.SelectedValue == null)
+            {
+                MessageBox.Show("Nenhum item de procura selecionado");
+                return;
+            }
             if (ComboBoxSearch.SelectedIndex == 0)
             {
                 foreach (var doctor in doctors)
@@ -93,7 +94,6 @@ namespace ClinicaVeterinariaWPF
                         searchDoctors.Add(doctor);
                     }
                 }
-                DataGridSearch.Items.Refresh();
             }
             else if (ComboBoxSearch.SelectedIndex == 1)
             {
@@ -104,12 +104,10 @@ namespace ClinicaVeterinariaWPF
                         searchDoctors.Add(doctor);
                     }
                 }
-                DataGridSearch.Items.Refresh();
             }
-            else
-            {
-                MessageBox.Show("Nenhum item de procura selecionado");
-            }
+
+            DataGridSearch.ItemsSource = null;
+            DataGridSearch.ItemsSource = searchDoctors;
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -142,9 +140,9 @@ namespace ClinicaVeterinariaWPF
             }
             else
             {
-                foreach(var appointment in appointments)
+                foreach (var appointment in appointments)
                 {
-                    if(appointment.DoctorId == selected.Id)
+                    if (appointment.DoctorId == selected.Id)
                     {
                         MessageBox.Show("O doutor não pode ser eliminado pois tem consultas marcadas");
                         return;
@@ -164,6 +162,8 @@ namespace ClinicaVeterinariaWPF
                     }
                 }
 
+                DeactivateButtons();
+
                 var response2 = await apiService.DeleteAsync(urlBase, "doctor", selected.Id);
 
                 if (response2.IsSuccess)
@@ -178,6 +178,8 @@ namespace ClinicaVeterinariaWPF
                 {
                     MessageBox.Show("Erro: " + response2.Message);
                 }
+
+                ActivateButtons();
             }
         }
 
@@ -189,12 +191,12 @@ namespace ClinicaVeterinariaWPF
                 MessageBox.Show("Selecione um dia para adicionar as horas", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            if(TimePickerStart.Value == null || TimePickerEnd.Value == null)
+            if (TimePickerStart.Value == null || TimePickerEnd.Value == null)
             {
                 MessageBox.Show("Preencha os campos das horas", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            if(TimePickerStart.Value >= TimePickerEnd.Value)
+            if (TimePickerStart.Value >= TimePickerEnd.Value)
             {
                 MessageBox.Show("Horário inválido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -230,6 +232,8 @@ namespace ClinicaVeterinariaWPF
         {
             if (Validation())
             {
+                DeactivateButtons();
+
                 Doctor doctor = new Doctor()
                 {
                     Name = TextBoxName.Text,
@@ -246,8 +250,8 @@ namespace ClinicaVeterinariaWPF
                 }
                 else
                 {
-                    doctor.Id = selectedDoctorId.Value;
-                    response = await apiService.PutAsync(urlBase, "doctor", doctor, selectedDoctorId.Value);
+                    doctor.Id = selectedDoctorId;
+                    response = await apiService.PutAsync(urlBase, "doctor", doctor, selectedDoctorId);
                 }
 
                 if (response.IsSuccess)
@@ -276,6 +280,7 @@ namespace ClinicaVeterinariaWPF
                                     if (!response.IsSuccess)
                                     {
                                         MessageBox.Show("Erro: " + response.Message);
+                                        ActivateButtons();
                                         return;
                                     }
                                 }
@@ -310,6 +315,7 @@ namespace ClinicaVeterinariaWPF
                                                 if (!response.IsSuccess)
                                                 {
                                                     MessageBox.Show("Erro: " + response.Message);
+                                                    ActivateButtons();
                                                     return;
                                                 }
                                             }
@@ -328,6 +334,8 @@ namespace ClinicaVeterinariaWPF
                 {
                     MessageBox.Show("Erro: " + response.Message);
                 }
+
+                ActivateButtons();
             }
         }
 
@@ -338,7 +346,7 @@ namespace ClinicaVeterinariaWPF
 
         private void CreateSchedule()
         {
-            string[] days = { "Domingo", "Segunda", "Terça-feira", "Quarta-feira", "Quinta-Feira", "Sexta-feira", "Sábado"};
+            string[] days = { "Domingo", "Segunda", "Terça-feira", "Quarta-feira", "Quinta-Feira", "Sexta-feira", "Sábado" };
 
             daySchedules.Clear();
 
@@ -382,6 +390,7 @@ namespace ClinicaVeterinariaWPF
             TextBoxName.Text = "";
             TextBoxPhoneNumber.Text = "";
             TextBoxSpeciality.Text = "";
+            CheckBoxActive.IsChecked = true;
             CreateSchedule();
         }
 
@@ -412,9 +421,9 @@ namespace ClinicaVeterinariaWPF
 
             bool onlyDaysOff = true;
 
-            foreach(var daySchedule in daySchedules)
+            foreach (var daySchedule in daySchedules)
             {
-                if(daySchedule.Start != TimeSpan.Zero || daySchedule.End != TimeSpan.Zero)
+                if (daySchedule.Start != TimeSpan.Zero || daySchedule.End != TimeSpan.Zero)
                 {
                     onlyDaysOff = false;
                 }
@@ -427,6 +436,28 @@ namespace ClinicaVeterinariaWPF
             }
 
             return true;
+        }
+
+        private void DeactivateButtons()
+        {
+            btnSearch.IsEnabled = false;
+            btnEdit.IsEnabled = false;
+            btnNew.IsEnabled = false;
+            btnSave.IsEnabled = false;
+            btnClose.IsEnabled = false;
+            btnAddHour.IsEnabled = false;
+            btnDayOff.IsEnabled = false;
+        }
+
+        private void ActivateButtons()
+        {
+            btnSearch.IsEnabled = true;
+            btnEdit.IsEnabled = true;
+            btnNew.IsEnabled = true;
+            btnSave.IsEnabled = true;
+            btnClose.IsEnabled = true;
+            btnAddHour.IsEnabled = true;
+            btnDayOff.IsEnabled = true;
         }
 
         private async void btnAllList_Click(object sender, RoutedEventArgs e)

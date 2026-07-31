@@ -7,9 +7,6 @@ using System.Windows;
 
 namespace ClinicaVeterinariaWPF
 {
-    /// <summary>
-    /// Interaction logic for AppointmentWindow.xaml
-    /// </summary>
     public partial class AppointmentWindow : Window
     {
         private readonly ApiService apiService = new ApiService();
@@ -35,6 +32,7 @@ namespace ClinicaVeterinariaWPF
             await LoadDoctors();
             await LoadRooms();
             await LoadAppointments();
+            await LoadDoctorSchedules();
         }
 
         private async Task LoadAnimals()
@@ -164,45 +162,44 @@ namespace ClinicaVeterinariaWPF
             if (ComboBoxSearch.SelectedItem == null && DatePickerSearch.SelectedDate == null)
             {
                 MessageBox.Show("Nenhum item de procura selecionado");
+                return;
             }
-            else
+
+            appointmentHelpersSearch = new List<AppointmentHelper>(appointmentHelpers);
+
+            if (DatePickerSearch.SelectedDate != null)
             {
-                appointmentHelpersSearch = new List<AppointmentHelper>(appointmentHelpers);
-
-                if (DatePickerSearch.SelectedDate != null)
+                foreach (var appointmentHelper in appointmentHelpers)
                 {
-                    foreach (var appointmentHelper in appointmentHelpers)
+                    if (appointmentHelper.Date != DatePickerSearch.SelectedDate)
                     {
-                        if (appointmentHelper.Date != DatePickerSearch.SelectedDate)
-                        {
-                            appointmentHelpersSearch.Remove(appointmentHelper);
-                        }
+                        appointmentHelpersSearch.Remove(appointmentHelper);
                     }
                 }
-                if (ComboBoxSearch.SelectedIndex == 0)
-                {
-                    foreach (var appointmentHelper in appointmentHelpers)
-                    {
-                        if (appointmentHelper.AnimalName.IndexOf(TextBoxSearch.Text, StringComparison.OrdinalIgnoreCase) < 0)
-                        {
-                            appointmentHelpersSearch.Remove(appointmentHelper);
-                        }
-                    }
-                }
-                else if (ComboBoxSearch.SelectedIndex == 1)
-                {
-                    foreach (var appointmentHelper in appointmentHelpers)
-                    {
-                        if (appointmentHelper.DoctorName.IndexOf(TextBoxSearch.Text, StringComparison.OrdinalIgnoreCase) < 0)
-                        {
-                            appointmentHelpersSearch.Remove(appointmentHelper);
-                        }
-                    }
-                }
-
-                DataGridSearch.ItemsSource = null;
-                DataGridSearch.ItemsSource = appointmentHelpersSearch;
             }
+            if (ComboBoxSearch.SelectedIndex == 0)
+            {
+                foreach (var appointmentHelper in appointmentHelpers)
+                {
+                    if (appointmentHelper.AnimalName.IndexOf(TextBoxSearch.Text, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        appointmentHelpersSearch.Remove(appointmentHelper);
+                    }
+                }
+            }
+            else if (ComboBoxSearch.SelectedIndex == 1)
+            {
+                foreach (var appointmentHelper in appointmentHelpers)
+                {
+                    if (appointmentHelper.DoctorName.IndexOf(TextBoxSearch.Text, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        appointmentHelpersSearch.Remove(appointmentHelper);
+                    }
+                }
+            }
+
+            DataGridSearch.ItemsSource = null;
+            DataGridSearch.ItemsSource = appointmentHelpersSearch;
         }
 
         private async void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -267,20 +264,20 @@ namespace ClinicaVeterinariaWPF
             TimePickerStart.Value = DateTime.Today.Add(selected.StartTime);
             TimePickerEnd.Value = DateTime.Today.Add(selected.EndTime);
 
-            DataGridSearch.Items.Refresh();
-
             await LoadAppointments();
         }
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
-            ClearForm();
+            ClearTools();
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (Validation())
             {
+                DeactivateButtons();
+
                 Animal animal = (Animal)ComboBoxAnimal.SelectedValue;
                 Doctor doctor = (Doctor)ComboBoxDoctor.SelectedValue;
                 Room room = (Room)ComboBoxRoom.SelectedValue;
@@ -314,13 +311,15 @@ namespace ClinicaVeterinariaWPF
                 if (response.IsSuccess)
                 {
                     MessageBox.Show("Consulta guardada com sucesso");
-                    ClearForm();
+                    ClearTools();
                     await LoadAppointments();
                 }
                 else
                 {
                     MessageBox.Show("Erro: " + response.Message);
                 }
+
+                ActivateButtons();
             }
         }
 
@@ -329,7 +328,7 @@ namespace ClinicaVeterinariaWPF
 
         }
 
-        private void ClearForm()
+        private void ClearTools()
         {
             ComboBoxAnimal.SelectedItem = null;
             ComboBoxDoctor.SelectedItem = null;
@@ -424,14 +423,17 @@ namespace ClinicaVeterinariaWPF
             {
                 foreach (Appointment appointment in appointments)
                 {
-                    if(animal.Id == appointment.AnimalId)
+                    if(appointment.Id != selectedAppointmentId)
                     {
-                        if (appointment.Date == date && appointment.Canceled == false)
+                        if (animal.Id == appointment.AnimalId)
                         {
-                            if (start < appointment.EndTime && end > appointment.StartTime)
+                            if (appointment.Date == date && appointment.Canceled == false)
                             {
-                                MessageBox.Show("O animal já tem marcação neste horário", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                                return false;
+                                if (start < appointment.EndTime && end > appointment.StartTime)
+                                {
+                                    MessageBox.Show("O animal já tem marcação neste horário", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -449,14 +451,17 @@ namespace ClinicaVeterinariaWPF
                         {
                             foreach (Appointment appointment in appointments)
                             {
-                                if(appointment.DoctorId == doctor.Id)
+                                if(appointment.Id != selectedAppointmentId)
                                 {
-                                    if (appointment.Date == date && appointment.Canceled == false)
+                                    if (appointment.DoctorId == doctor.Id)
                                     {
-                                        if (start < appointment.EndTime && end > appointment.StartTime)
+                                        if (appointment.Date == date && appointment.Canceled == false)
                                         {
-                                            MessageBox.Show("O doutor já tem marcação neste horário", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                                            return false;
+                                            if (start < appointment.EndTime && end > appointment.StartTime)
+                                            {
+                                                MessageBox.Show("O doutor já tem marcação neste horário", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                                return false;
+                                            }
                                         }
                                     }
                                 }
@@ -478,14 +483,17 @@ namespace ClinicaVeterinariaWPF
 
                 foreach (Appointment appointment in appointments)
                 {
-                    if(appointment.RoomId == room.Id)
+                    if(appointment.Id != selectedAppointmentId)
                     {
-                        if (appointment.Date == date && appointment.Canceled == false)
+                        if (appointment.RoomId == room.Id)
                         {
-                            if (start < appointment.EndTime && end > appointment.StartTime)
+                            if (appointment.Date == date && appointment.Canceled == false)
                             {
-                                MessageBox.Show("Esta sala está ocupada no horário selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                                return false;
+                                if (start < appointment.EndTime && end > appointment.StartTime)
+                                {
+                                    MessageBox.Show("Esta sala está ocupada no horário selecionado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -493,6 +501,26 @@ namespace ClinicaVeterinariaWPF
             }
 
             return true;
+        }
+
+        private void DeactivateButtons()
+        {
+            btnSearch.IsEnabled = false;
+            btnEdit.IsEnabled = false;
+            btnNew.IsEnabled = false;
+            btnSave.IsEnabled = false;
+            btnClose.IsEnabled = false;
+            btnCleanDate.IsEnabled = false;
+        }
+
+        private void ActivateButtons()
+        {
+            btnSearch.IsEnabled = true;
+            btnEdit.IsEnabled = true;
+            btnNew.IsEnabled = true;
+            btnSave.IsEnabled = true;
+            btnClose.IsEnabled = true;
+            btnCleanDate.IsEnabled = true;
         }
 
         private async void btnAllList_Click(object sender, RoutedEventArgs e)
