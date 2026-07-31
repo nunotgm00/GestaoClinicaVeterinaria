@@ -3,8 +3,10 @@ using ClinicaVeterinariaWPF.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace ClinicaVeterinariaWPF
 {
@@ -167,7 +169,7 @@ namespace ClinicaVeterinariaWPF
                 if (response2.IsSuccess)
                 {
                     MessageBox.Show("Doutor eliminado");
-                    ClearForm();
+                    ClearTools();
                     await LoadDoctors();
                     await LoadDoctorSchedules();
                     await LoadAppointments();
@@ -182,7 +184,21 @@ namespace ClinicaVeterinariaWPF
         private void btnAddHour_Click(object sender, RoutedEventArgs e)
         {
             DaySchedule selected = DataGridSchedule.SelectedItem as DaySchedule;
-            if (selected == null) return;
+            if (selected == null)
+            {
+                MessageBox.Show("Selecione um dia para adicionar as horas", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if(TimePickerStart.Value == null || TimePickerEnd.Value == null)
+            {
+                MessageBox.Show("Preencha os campos das horas", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if(TimePickerStart.Value >= TimePickerEnd.Value)
+            {
+                MessageBox.Show("Horário inválido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             selected.Start = ToTimeSpan(TimePickerStart.Value);
             selected.End = ToTimeSpan(TimePickerEnd.Value);
@@ -193,7 +209,11 @@ namespace ClinicaVeterinariaWPF
         private void btnDayOff_Click(object sender, RoutedEventArgs e)
         {
             DaySchedule selected = DataGridSchedule.SelectedItem as DaySchedule;
-            if (selected == null) return;
+            if (selected == null)
+            {
+                MessageBox.Show("Selecione um dia para adicionar a folga", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             selected.Start = TimeSpan.Zero;
             selected.End = TimeSpan.Zero;
@@ -203,92 +223,95 @@ namespace ClinicaVeterinariaWPF
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
-            ClearForm();
+            ClearTools();
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            Doctor doctor = new Doctor()
+            if (Validation())
             {
-                Name = TextBoxName.Text,
-                PhoneNumber = TextBoxPhoneNumber.Text,
-                Speciality = TextBoxSpeciality.Text,
-                Active = (bool)CheckBoxActive.IsChecked
-            };
+                Doctor doctor = new Doctor()
+                {
+                    Name = TextBoxName.Text,
+                    PhoneNumber = TextBoxPhoneNumber.Text,
+                    Speciality = TextBoxSpeciality.Text,
+                    Active = (bool)CheckBoxActive.IsChecked
+                };
 
-            Response response;
+                Response response;
 
-            if (selectedDoctorId == -1)
-            {
-                response = await apiService.PostAsync(urlBase, "doctor", doctor);
-            }
-            else
-            {
-                doctor.Id = selectedDoctorId.Value;
-                response = await apiService.PutAsync(urlBase, "doctor", doctor, selectedDoctorId.Value);
-            }
-
-            if (response.IsSuccess)
-            {
                 if (selectedDoctorId == -1)
                 {
-                    Doctor createdDoctor = JsonConvert.DeserializeObject<Doctor>((string)response.Result);
-                    doctor.Id = createdDoctor.Id;
+                    response = await apiService.PostAsync(urlBase, "doctor", doctor);
+                }
+                else
+                {
+                    doctor.Id = selectedDoctorId.Value;
+                    response = await apiService.PutAsync(urlBase, "doctor", doctor, selectedDoctorId.Value);
+                }
 
-                    for (int i = 0; i < 7; i++)
+                if (response.IsSuccess)
+                {
+                    if (selectedDoctorId == -1)
                     {
-                        foreach (var daySchedule in daySchedules)
+                        Doctor createdDoctor = JsonConvert.DeserializeObject<Doctor>((string)response.Result);
+                        doctor.Id = createdDoctor.Id;
+
+                        for (int i = 0; i < 7; i++)
                         {
-                            if (daySchedule.Order == i)
+                            foreach (var daySchedule in daySchedules)
                             {
-                                DoctorSchedule doctorSchedule = new DoctorSchedule()
+                                if (daySchedule.Order == i)
                                 {
-                                    DoctorId = doctor.Id,
-                                    DayOfWeek = (byte)i,
-                                    StartTime = daySchedule.Start,
-                                    EndTime = daySchedule.End,
-                                };
+                                    DoctorSchedule doctorSchedule = new DoctorSchedule()
+                                    {
+                                        DoctorId = doctor.Id,
+                                        DayOfWeek = (byte)i,
+                                        StartTime = daySchedule.Start,
+                                        EndTime = daySchedule.End,
+                                    };
 
-                                response = await apiService.PostAsync(urlBase, "doctorSchedule", doctorSchedule);
+                                    response = await apiService.PostAsync(urlBase, "doctorSchedule", doctorSchedule);
 
-                                if (!response.IsSuccess)
-                                {
-                                    MessageBox.Show("Erro: " + response.Message);
-                                    return;
+                                    if (!response.IsSuccess)
+                                    {
+                                        MessageBox.Show("Erro: " + response.Message);
+                                        return;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                else
-                {
-                    for (int i = 0; i < 7; i++)
+                    else
                     {
-                        foreach (var doctorSchedule in doctorSchedules)
+                        for (int i = 0; i < 7; i++)
                         {
-                            if (doctorSchedule.DoctorId == doctor.Id)
+                            foreach (var doctorSchedule in doctorSchedules)
                             {
-                                if(doctorSchedule.DayOfWeek == (byte)i)
+                                if (doctorSchedule.DoctorId == doctor.Id)
                                 {
-                                    foreach (var daySchedule in daySchedules)
+                                    if (doctorSchedule.DayOfWeek == (byte)i)
                                     {
-                                        if (daySchedule.Order == i)
+                                        foreach (var daySchedule in daySchedules)
                                         {
-                                            DoctorSchedule editedDoctorSchedule = new DoctorSchedule()
+                                            if (daySchedule.Order == i)
                                             {
-                                                Id = doctorSchedule.Id,
-                                                DoctorId = doctor.Id,
-                                                DayOfWeek = (byte)i,
-                                                StartTime = daySchedule.Start,
-                                                EndTime = daySchedule.End,
-                                            };
+                                                DoctorSchedule editedDoctorSchedule = new DoctorSchedule()
+                                                {
+                                                    Id = doctorSchedule.Id,
+                                                    DoctorId = doctor.Id,
+                                                    DayOfWeek = (byte)i,
+                                                    StartTime = daySchedule.Start,
+                                                    EndTime = daySchedule.End,
+                                                };
 
-                                            response = await apiService.PutAsync(urlBase, "doctorSchedule", editedDoctorSchedule, editedDoctorSchedule.Id);
+                                                response = await apiService.PutAsync(urlBase, "doctorSchedule", editedDoctorSchedule, editedDoctorSchedule.Id);
 
-                                            if (!response.IsSuccess)
-                                            {
-                                                MessageBox.Show("Erro: " + response.Message);
-                                                return;
+                                                if (!response.IsSuccess)
+                                                {
+                                                    MessageBox.Show("Erro: " + response.Message);
+                                                    return;
+                                                }
                                             }
                                         }
                                     }
@@ -296,15 +319,15 @@ namespace ClinicaVeterinariaWPF
                             }
                         }
                     }
+                    MessageBox.Show("Doutor guardado com sucesso");
+                    ClearTools();
+                    await LoadDoctors();
+                    await LoadDoctorSchedules();
                 }
-                MessageBox.Show("Doutor guardado com sucesso");
-                ClearForm();
-                await LoadDoctors();
-                await LoadDoctorSchedules();
-            }
-            else
-            {
-                MessageBox.Show("Erro: " + response.Message);
+                else
+                {
+                    MessageBox.Show("Erro: " + response.Message);
+                }
             }
         }
 
@@ -349,10 +372,11 @@ namespace ClinicaVeterinariaWPF
                     }
                 }
             }
-            DataGridSchedule.Items.Refresh();
+            DataGridSchedule.ItemsSource = null;
+            DataGridSchedule.ItemsSource = daySchedules;
         }
 
-        private void ClearForm()
+        private void ClearTools()
         {
             selectedDoctorId = -1;
             TextBoxName.Text = "";
@@ -364,6 +388,45 @@ namespace ClinicaVeterinariaWPF
         private TimeSpan ToTimeSpan(DateTime? dateTime)
         {
             return (TimeSpan)dateTime.Value.TimeOfDay;
+        }
+
+        private bool Validation()
+        {
+            if (string.IsNullOrEmpty(TextBoxName.Text))
+            {
+                MessageBox.Show("Insira nome do doutor", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (!(TextBoxPhoneNumber.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxPhoneNumber.Text))
+            {
+                MessageBox.Show("Insira um número de telefone válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(TextBoxSpeciality.Text))
+            {
+                MessageBox.Show("Insira a especialidade do doutor", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            bool onlyDaysOff = true;
+
+            foreach(var daySchedule in daySchedules)
+            {
+                if(daySchedule.Start != TimeSpan.Zero || daySchedule.End != TimeSpan.Zero)
+                {
+                    onlyDaysOff = false;
+                }
+            }
+
+            if (onlyDaysOff)
+            {
+                MessageBox.Show("O doutor não pode ter apenas folgas", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            return true;
         }
     }
 }
