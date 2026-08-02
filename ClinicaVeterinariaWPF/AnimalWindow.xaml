@@ -5,86 +5,103 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
         mc:Ignorable="d"
-        Title="AnimalWindow" Height="650" Width="850">
+        Title="AnimalWindow" Height="900" Width="850">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-            <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox x:Name="ComboBoxSearch" Width="100" Margin="0,0,10,0">
-                <ComboBoxItem Content="Nome"/>
-                <ComboBoxItem Content="Espécie"/>
-                <ComboBoxItem Content="Dono"/>
-            </ComboBox>
-            <TextBox x:Name="TextBoxSearch" Width="200" Margin="0,0,10,0"/>
-            <Button x:Name="btnSearch" Content="Procurar" Width="80" Click="btnSearch_Click"/>
-        </StackPanel>
-
-        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn Header="Espécie" Binding="{Binding Species}" Width="*"/>
-                <DataGridTextColumn Header="Raça" Binding="{Binding Breed}" Width="*"/>
-                <DataGridTextColumn Header="Idade" Binding="{Binding Age}" Width="*"/>
-                <DataGridTextColumn Header="Dono" Binding="{Binding ClientName}" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button x:Name="btnAllList" Content="Lista Completa" Width="100" Margin="0,0,10,0" Click="btnAllList_Click"/>
-            <Button x:Name="btnEdit" Content="Editar" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
-            <Button x:Name="btnDelete" Content="Eliminar" Width="80" Click="btnDelete_Click"/>
-        </StackPanel>
-
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="470"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                <TextBlock Text="Nome"/>
-                <TextBox x:Name="TextBoxName" Margin="0,0,0,5"/>
-                <TextBlock Text="Espécie"/>
-                <TextBox x:Name="TextBoxSpecies" Margin="0,0,0,5"/>
-                <TextBlock Text="Raça"/>
-                <TextBox x:Name="TextBoxBreed" Margin="0,0,0,5"/>
-                <TextBlock Text="Idade"/>
-                <TextBox x:Name="TextBoxAge" Margin="0,0,0,5"/>
-                <TextBlock Text="Peso (Kg)"/>
-                <TextBox x:Name="TextBoxWeight" Margin="0,0,0,5"/>
-                <TextBlock Text="Cor"/>
-                <TextBox x:Name="TextBoxColor" Margin="0,0,0,5"/>
-                <TextBlock Text="Sexo"/>
-                <ComboBox x:Name="ComboBoxSex" Margin="0,0,0,5">
-                    <ComboBoxItem Content="Masculino"/>
-                    <ComboBoxItem Content="Feminino"/>
-                    <ComboBoxItem Content="Outro"/>
-                </ComboBox>
+        <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Pesquisa de animais" VerticalAlignment="Center" Margin="0,0,5,20" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="DemiBold"/>
+                    <ComboBox x:Name="ComboBoxSearch" Width="200" Margin="0,0,10,0">
+                        <ComboBoxItem Content="Nome"/>
+                        <ComboBoxItem Content="Espécie"/>
+                        <ComboBoxItem Content="Dono"/>
+                    </ComboBox>
+                    <TextBox x:Name="TextBoxSearch" Width="394" Margin="0,0,10,0"/>
+                    <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click"/>
+                </StackPanel>
             </StackPanel>
+        </Border>
 
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="Consultas" FontWeight="Bold" Margin="0,0,0,5"/>
-                <DataGrid x:Name="DataGridAppointments" AutoGenerateColumns="False" IsReadOnly="True">
+        <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                    <TextBlock Text="Lista de animais" VerticalAlignment="Center" Margin="0,0,286,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                    <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
+                    <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click"/>
+                    <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Data" Binding="{Binding DateTimeDisplay}" Width="2*"/>
-                        <DataGridTextColumn Header="Motivo" Binding="{Binding Motive}" Width="2*"/>
-                        <DataGridTextColumn Header="Sala" Binding="{Binding RoomName}" Width="*"/>
+                        <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Espécie" Binding="{Binding Species}" Width="*"/>
+                        <DataGridTextColumn Header="Raça" Binding="{Binding Breed}" Width="*"/>
+                        <DataGridTextColumn Header="Idade" Binding="{Binding Age}" Width="*"/>
+                        <DataGridTextColumn Header="Dono" Binding="{Binding ClientName}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
-            </StackPanel>
-        </Grid>
+            </Grid>
+        </Border>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button x:Name="btnNew" Content="Novo" Width="80" Margin="0,0,10,0" Click="btnNew_Click"/>
-            <Button x:Name="btnSave" Content="Guardar" Width="80" Margin="0,0,10,0"  Click="btnSave_Click"/>
-            <Button x:Name="btnClose" Content="Fechar" Width="80" Click="btnClose_Click"/>
-        </StackPanel>
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Dados do animal" VerticalAlignment="Center" Margin="0,0,5,5" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="470"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Text="Nome" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxName" Margin="0,2,0,5"/>
+                        <TextBlock Text="Espécie" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxSpecies" Margin="0,2,0,5"/>
+                        <TextBlock Text="Raça" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxBreed" Margin="0,2,0,5"/>
+                        <TextBlock Text="Idade" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxAge" Margin="0,2,0,5"/>
+                        <TextBlock Text="Peso (Kg)" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxWeight" Margin="0,2,0,5"/>
+                        <TextBlock Text="Cor" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxColor" Margin="0,2,0,5"/>
+                        <TextBlock Text="Sexo" FontWeight="DemiBold"/>
+                        <ComboBox x:Name="ComboBoxSex" Margin="0,2,0,5">
+                            <ComboBoxItem Content="Masculino"/>
+                            <ComboBoxItem Content="Feminino"/>
+                            <ComboBoxItem Content="Outro"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Consultas do animal selecionado" FontWeight="Bold" Margin="0,0,0,5" FontSize="15"/>
+                        <DataGrid x:Name="DataGridAppointments" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Data" Binding="{Binding DateTimeDisplay}" Width="2*"/>
+                                <DataGridTextColumn Header="Motivo" Binding="{Binding Motive}" Width="2*"/>
+                                <DataGridTextColumn Header="Sala" Binding="{Binding RoomName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Height="35">
+                    <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click"/>
+                    <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0"  Click="btnSave_Click"/>
+                    <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
