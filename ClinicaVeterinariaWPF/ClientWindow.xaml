@@ -38,7 +38,7 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
             <Button x:Name="btnAllList" Content="Lista Completa" Width="100" Margin="0,0,10,0" Click="btnAllList_Click"/>
             <Button x:Name="btnEdit" Content="Editar" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
-            <Button x:Name="btnDelete" Content="Eliminar" Width="80" Margin="0,0,10,0" Click="btnDelete_Click"/>
+            <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="80" Margin="0,0,10,0" Click="btnDelete_Click"/>
         </StackPanel>
 
         <Grid Grid.Row="3">
@@ -87,8 +87,8 @@
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
             <Button x:Name="btnNew" Content="Novo" Width="80" Margin="0,0,10,0" Click="btnNew_Click"/>
-            <Button x:Name="btnSave" Content="Guardar" Width="80" Margin="0,0,10,0" Click="btnSave_Click"/>
-            <Button x:Name="btnClose" Content="Fechar" Width="80" Click="btnClose_Click"/>
+            <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="80" Margin="0,0,10,0" Click="btnSave_Click"/>
+            <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource DangerButton}" Width="80" Click="btnClose_Click"/>
         </StackPanel>
 
     </Grid>
