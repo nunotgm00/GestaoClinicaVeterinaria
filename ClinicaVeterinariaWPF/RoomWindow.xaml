@@ -5,52 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
         mc:Ignorable="d"
-        Title="RoomWindow" Height="500" Width="600">
+        Title="RoomWindow" Height="700" Width="700"
+        Background="#F6FFFE">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="122"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-            <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox x:Name="ComboBoxSearch" Width="120" Margin="0,0,10,0">
-                <ComboBoxItem Content="Número"/>
-                <ComboBoxItem Content="Tipo"/>
-            </ComboBox>
-            <TextBox x:Name="TextBoxSearch" Width="200" Margin="0,0,10,0"/>
-            <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="80" Click="btnSearch_Click"/>
-        </StackPanel>
-        
-        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Número" Binding="{Binding Id}" Width="*"/>
-                <DataGridTextColumn Header="Tipo" Binding="{Binding Type}" Width="2*"/>
-                <DataGridTextColumn Header="Em Manutenção" Binding="{Binding UnderMaintenance}" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Pesquisa de salas" VerticalAlignment="Center" Margin="0,0,5,20" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
-            <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource PrimaryButton}" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
-            <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="80" Click="btnDelete_Click"/>
-        </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="36">
+                    <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="DemiBold"/>
+                    <ComboBox x:Name="ComboBoxSearch" Width="120" Margin="0,0,10,0">
+                        <ComboBoxItem Content="Número"/>
+                        <ComboBoxItem Content="Tipo"/>
+                    </ComboBox>
+                    <TextBox x:Name="TextBoxSearch" Width="324" Margin="0,0,10,0"/>
+                    <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
 
-        <StackPanel Grid.Row="3" Margin="0,0,0,10">
-            <TextBlock Text="Número da sala"/>
-            <TextBox x:Name="TextBoxRoomNumber" IsEnabled="False" Margin="0,0,0,5"/>
-            <TextBlock Text="Tipo"/>
-            <TextBox x:Name="TextBoxType" Margin="0,0,0,5"/>
-            <CheckBox x:Name="CheckBoxUnderMaintenance" Content="Em Manutenção" Margin="0,5,0,0"/>
-        </StackPanel>
+        <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="80" Margin="0,0,10,0" Click="btnNew_Click"/>
-            <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="80" Margin="0,0,10,0"  Click="btnSave_Click"/>
-            <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="80" Click="btnClose_Click"/>
-        </StackPanel>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                    <TextBlock Text="Lista de Salas" VerticalAlignment="Center" Margin="0,0,177,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                    <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
+                    <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click"/>
+                    <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" FontWeight="DemiBold">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Número" Binding="{Binding Id}" Width="*"/>
+                        <DataGridTextColumn Header="Tipo" Binding="{Binding Type}" Width="2*"/>
+                        <DataGridTextColumn Header="Em Manutenção" Binding="{Binding UnderMaintenance}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Dados da sala" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                <TextBlock Text="Número da sala" Margin="0,0,0,3" FontWeight="DemiBold"/>
+                <TextBox x:Name="TextBoxRoomNumber" IsEnabled="False" Margin="0,0,0,5"/>
+                <TextBlock Text="Tipo" Margin="0,0,0,3" FontWeight="DemiBold"/>
+                <TextBox x:Name="TextBoxType" Margin="0,0,0,5"/>
+                <CheckBox x:Name="CheckBoxUnderMaintenance" Content="Em Manutenção" Margin="0,5,0,0" FontWeight="DemiBold"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="35"> 
+                    <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click"/>
+                    <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0"  Click="btnSave_Click"/>
+                    <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
     </Grid>
 </Window>
