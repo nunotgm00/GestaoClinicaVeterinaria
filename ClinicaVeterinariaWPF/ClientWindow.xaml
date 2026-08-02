@@ -89,8 +89,8 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sem dono" FontWeight="Bold" FontSize="15"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Associado ao cliente" FontWeight="Bold" FontSize="15" />
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sem dono" FontWeight="Bold" FontSize="15" Foreground="#2D6A6A"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Associado ao cliente" FontWeight="Bold" FontSize="15" Foreground="#2D6A6A" />
 
                         <ListBox x:Name="ListBoxAvailableAnimals" Grid.Row="1" Grid.Column="0" DisplayMemberPath="Name" FontWeight="DemiBold"/>
 

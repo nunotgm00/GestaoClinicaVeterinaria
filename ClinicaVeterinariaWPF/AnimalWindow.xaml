@@ -86,7 +86,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="Consultas do animal selecionado" FontWeight="Bold" Margin="0,0,0,5" FontSize="15"/>
+                        <TextBlock Text="Consultas do animal selecionado" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" Foreground="#2D6A6A"/>
                         <DataGrid x:Name="DataGridAppointments" AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Data" Binding="{Binding DateTimeDisplay}" Width="2*"/>
