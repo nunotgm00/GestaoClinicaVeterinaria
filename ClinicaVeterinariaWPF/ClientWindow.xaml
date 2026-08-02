@@ -5,91 +5,111 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
         mc:Ignorable="d"
-        Title="Gestão de Clientes" Height="500" Width="900">
+        Title="Gestão de Clientes" Height="850" Width="900"
+        Background="#F6FFFE">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-            <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox x:Name="ComboBoxSearch" Width="100" Margin="0,0,10,0">
-                <ComboBoxItem Content="Nome"/>
-                <ComboBoxItem Content="NIF"/>
-                <ComboBoxItem Content="Telefone"/>
-            </ComboBox>
-            <TextBox x:Name="TextBoxSearch" Width="200" Margin="0,0,10,0"/>
-            <Button x:Name="btnSearch" Content="Procurar" Width="80" Click="btnSearch_Click"/>
-        </StackPanel>
-
-        <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="2*"/>
-                <DataGridTextColumn Header="NIF" Binding="{Binding Nif}" Width="*"/>
-                <DataGridTextColumn Header="Telefone" Binding="{Binding PhoneNumber}" Width="*"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button x:Name="btnAllList" Content="Lista Completa" Width="100" Margin="0,0,10,0" Click="btnAllList_Click"/>
-            <Button x:Name="btnEdit" Content="Editar" Width="80" Margin="0,0,10,0" Click="btnEdit_Click"/>
-            <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="80" Margin="0,0,10,0" Click="btnDelete_Click"/>
-        </StackPanel>
-
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="350"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                <TextBlock Text="Nome"/>
-                <TextBox x:Name="TextBoxName" Margin="0,0,0,5"/>
-                <TextBlock Text="Morada"/>
-                <TextBox x:Name="TextBoxAddress" Margin="0,0,0,5"/>
-                <TextBlock Text="NIF"/>
-                <TextBox x:Name="TextBoxNif" Margin="0,0,0,5"/>
-                <TextBlock Text="Telefone"/>
-                <TextBox x:Name="TextBoxPhoneNumber" Margin="0,0,0,5"/>
-                <TextBlock Text="Email"/>
-                <TextBox x:Name="TextBoxEmail" Margin="0,0,0,5"/>
+        <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Pesquisa de clientes" VerticalAlignment="Center" Margin="0,0,5,20" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="DemiBold"/>
+                    <ComboBox x:Name="ComboBoxSearch" Width="150" Margin="0,0,10,0">
+                        <ComboBoxItem Content="Nome"/>
+                        <ComboBoxItem Content="NIF"/>
+                        <ComboBoxItem Content="Telefone"/>
+                    </ComboBox>
+                    <TextBox x:Name="TextBoxSearch" Width="497" Margin="0,0,10,0"/>
+                    <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click"/>
+                </StackPanel>
             </StackPanel>
+        </Border>
 
-            <Grid Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="44"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Sem dono" FontWeight="Bold"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="Associado ao cliente" FontWeight="Bold"/>
-
-                <ListBox x:Name="ListBoxAvailableAnimals" Grid.Row="1" Grid.Column="0" DisplayMemberPath="Name"/>
-
-                <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,5,0">
-                    <Button x:Name="btnAddAnimal" Content="&gt;&gt;" Width="35" Margin="0,0,0,5" Click="btnAddAnimal_Click"/>
-                    <Button x:Name="btnRemoveAnimal" Content="&lt;&lt;" Width="35" Click="btnRemoveAnimal_Click"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                    <TextBlock Text="Lista de clientes" VerticalAlignment="Center" Margin="0,0,352,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                    <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
+                    <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click"/>
+                    <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click"/>
                 </StackPanel>
 
-                <ListBox x:Name="ListBoxClientAnimals" Grid.Row="1" Grid.Column="2" DisplayMemberPath="Name"/>
+                <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="False" FontWeight="DemiBold">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="2*"/>
+                        <DataGridTextColumn Header="NIF" Binding="{Binding Nif}" Width="*"/>
+                        <DataGridTextColumn Header="Telefone" Binding="{Binding PhoneNumber}" Width="*"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
-        </Grid>
+        </Border>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button x:Name="btnNew" Content="Novo" Width="80" Margin="0,0,10,0" Click="btnNew_Click"/>
-            <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="80" Margin="0,0,10,0" Click="btnSave_Click"/>
-            <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource DangerButton}" Width="80" Click="btnClose_Click"/>
-        </StackPanel>
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Dados do cliente" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition Width="440"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Text="Nome" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxName" Margin="0,2,2,5"/>
+                        <TextBlock Text="Morada" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxAddress" Margin="0,2,0,5"/>
+                        <TextBlock Text="NIF" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxNif" Margin="0,2,0,5"/>
+                        <TextBlock Text="Telefone" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxPhoneNumber" Margin="0,2,0,5"/>
+                        <TextBlock Text="Email" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxEmail" Margin="0,2,0,5"/>
+                    </StackPanel>
+
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sem dono" FontWeight="Bold" FontSize="15"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Associado ao cliente" FontWeight="Bold" FontSize="15" />
+
+                        <ListBox x:Name="ListBoxAvailableAnimals" Grid.Row="1" Grid.Column="0" DisplayMemberPath="Name" FontWeight="DemiBold"/>
+
+                        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,5,0">
+                            <Button x:Name="btnAddAnimal" Content="&gt;&gt;" Style="{StaticResource PrimaryButton}" Height="35" Width="50" Margin="0,0,0,10" Click="btnAddAnimal_Click"/>
+                            <Button x:Name="btnRemoveAnimal" Content="&lt;&lt;" Style="{StaticResource PrimaryButton}" Height="35" Width="50" Click="btnRemoveAnimal_Click"/>
+                        </StackPanel>
+
+                        <ListBox x:Name="ListBoxClientAnimals" Grid.Row="1" Grid.Column="2" DisplayMemberPath="Name" FontWeight="DemiBold"/>
+                    </Grid>
+                </Grid>
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click"/>
+                    <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnSave_Click"/>
+                    <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
 
     </Grid>
 </Window>

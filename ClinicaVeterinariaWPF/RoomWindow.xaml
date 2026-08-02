@@ -38,7 +38,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                    <TextBlock Text="Lista de Salas" VerticalAlignment="Center" Margin="0,0,177,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                    <TextBlock Text="Lista de salas" VerticalAlignment="Center" Margin="0,0,178,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
                     <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
                     <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click"/>
                     <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click"/>
