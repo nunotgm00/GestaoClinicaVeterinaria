@@ -17,5 +17,10 @@ namespace ClinicaVeterinariaWPF.Models
         public string Speciality { get; set; }
 
         public bool Active { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -27,5 +27,10 @@ namespace ClinicaVeterinariaWPF.Models
         public int? ClientId { get; set; }
 
         public string ClientName { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
