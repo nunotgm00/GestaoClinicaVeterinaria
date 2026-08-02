@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace ClinicaVeterinariaWPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -25,27 +22,32 @@ namespace ClinicaVeterinariaWPF
             InitializeComponent();
         }
 
-        private void BtnAnimals_Click(object sender, RoutedEventArgs e)
+        private void btnClients_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentArea.Content = new ClientUC();
         }
 
-        private void BtnClients_Click(object sender, RoutedEventArgs e)
+        private void btnAnimals_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentArea.Content = new AnimalUC();
         }
 
-        private void BtnDoctors_Click(object sender, RoutedEventArgs e)
+        private void btnDoctors_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentArea.Content = new DoctorUC();
         }
 
-        private void BtnRooms_Click(object sender, RoutedEventArgs e)
+        private void btnRooms_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentArea.Content = new RoomUC();
         }
 
-        private void BtnAppointments_Click(object sender, RoutedEventArgs e)
+        private void btnAppointments_Click(object sender, RoutedEventArgs e)
+        {
+            ContentArea.Content = new AppointmentUC();
+        }
+
+        private void btnCredits_Click(object sender, RoutedEventArgs e)
         {
 
         }

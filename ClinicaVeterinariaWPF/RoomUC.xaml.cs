@@ -3,12 +3,24 @@ using ClinicaVeterinariaWPF.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace ClinicaVeterinariaWPF
 {
-    public partial class RoomWindow : Window
+    /// <summary>
+    /// Interaction logic for RoomUC.xaml
+    /// </summary>
+    public partial class RoomUC : UserControl
     {
         private readonly ApiService apiService = new ApiService();
         private const string urlBase = "http://gestaoclinicaveterinariaapi.somee.com/api";
@@ -17,7 +29,7 @@ namespace ClinicaVeterinariaWPF
         private List<Room> searchRooms = new List<Room>();
         private List<Appointment> appointments = new List<Appointment>();
 
-        public RoomWindow()
+        public RoomUC()
         {
             InitializeComponent();
             this.Loaded += RoomWindow_Loaded;
@@ -71,7 +83,7 @@ namespace ClinicaVeterinariaWPF
             {
                 foreach (var room in rooms)
                 {
-                    if(!(TextBoxSearch.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxSearch.Text))
+                    if (!(TextBoxSearch.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxSearch.Text))
                     {
                         MessageBox.Show("Insira apenas números", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;

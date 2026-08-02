@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="ClinicaVeterinariaWPF.AppointmentUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="#F6FFFE">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="170"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Pesquisa de consultas" VerticalAlignment="Center" Margin="0,0,5,20" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15" Height="35">
+                    <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="DemiBold"/>
+                    <ComboBox x:Name="ComboBoxSearch" Width="200" Margin="0,0,10,0">
+                        <ComboBoxItem Content="Animal"/>
+                        <ComboBoxItem Content="Doutor"/>
+                    </ComboBox>
+                    <TextBox x:Name="TextBoxSearch" Width="389" Margin="0,0,10,0"/>
+                    <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnSearch_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="35">
+                    <TextBlock Text="e/ou escolha o dia:" VerticalAlignment="Center" Margin="0,0,20,0" FontWeight="DemiBold"/>
+                    <DatePicker x:Name="DatePickerSearch" Width="200" Margin="20,0,348,0"/>
+                    <Button x:Name="btnCleanDate" Content="Limpar Data" Style="{StaticResource PrimaryButton}" Width="100" Click="btnCleanDate_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                    <TextBlock Text="Lista de consultas" VerticalAlignment="Center" Margin="0,0,396,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                    <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
+                    <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Click="btnEdit_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="true">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Data" Binding="{Binding DateTimeDisplay}" Width="*"/>
+                        <DataGridTextColumn Header="Animal" Binding="{Binding AnimalName}" Width="*"/>
+                        <DataGridTextColumn Header="Doutor" Binding="{Binding DoctorName}" Width="*"/>
+                        <DataGridTextColumn Header="Sala" Binding="{Binding RoomName}" Width="60"/>
+                        <DataGridTextColumn Header="Cancelada" Binding="{Binding Canceled}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
+            <StackPanel>
+                <TextBlock Text="Dados da consulta" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Text="Animal" FontWeight="DemiBold"/>
+                        <ComboBox x:Name="ComboBoxAnimal" DisplayMemberPath="Name" Margin="0,2,0,5"/>
+                        <TextBlock Text="Doutor" FontWeight="DemiBold"/>
+                        <ComboBox x:Name="ComboBoxDoctor" DisplayMemberPath="Name" Margin="0,2,0,5"/>
+                        <TextBlock Text="Sala" FontWeight="DemiBold"/>
+                        <ComboBox x:Name="ComboBoxRoom" DisplayMemberPath="RoomName" Margin="0,2,0,5"/>
+                        <TextBlock Text="Motivo" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxMotive" Margin="0,2,0,5"/>
+                        <TextBlock Text="Tratamento" FontWeight="DemiBold"/>
+                        <TextBox x:Name="TextBoxTreatment" Margin="0,2,0,5"/>
+                        <CheckBox x:Name="CheckBoxCanceled" Content="Cancelada" Margin="0,0,0,5" FontWeight="DemiBold"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Data" FontWeight="DemiBold"/>
+                        <DatePicker x:Name="DatePickerDate" Margin="0,2,0,10"/>
+                        <TextBlock Text="Hora de Início" FontWeight="DemiBold"/>
+                        <xctk:TimePicker x:Name="TimePickerStart" Format="ShortTime" Margin="0,2,0,10"/>
+                        <TextBlock Text="Hora de fim" FontWeight="DemiBold"/>
+                        <xctk:TimePicker x:Name="TimePickerEnd" Format="ShortTime" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Height="35">
+                    <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click"/>
+                    <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0"  Click="btnSave_Click"/>
+                    <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
