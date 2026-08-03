@@ -2,6 +2,7 @@
 using ClinicaVeterinariaWPF.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -226,8 +227,12 @@ namespace ClinicaVeterinariaWPF
                         BorderNext.Text = selectedAppointment.DateTimeDisplay;
                     }
                 }
+                else
+                {
+                    BorderNext.Text = "---";
+                }
 
-                BorderNumber.Text = appointmentHelpers.Count.ToString();
+                    BorderNumber.Text = appointmentHelpers.Count.ToString();
                 BorderOwner.Text = selected.ClientName;
 
                 DataGridAppointments.ItemsSource = null;
@@ -243,14 +248,30 @@ namespace ClinicaVeterinariaWPF
         {
             Animal selected = DataGridSearch.SelectedItem as Animal;
 
+            appointmentsAnimal.Clear();
+
             if (selected == null)
             {
                 MessageBox.Show("Selecione um animal para eliminar", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+            foreach (var appointment in appointments)
+            {
+                if(appointment.AnimalId == selected.Id)
+                {
+                    appointmentsAnimal.Add(appointment);
+                }
+            }
+
             if (selected.ClientId != null)
             {
                 MessageBox.Show("Animal não pode ser eliminado pois tem um cliente associado", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if(appointmentsAnimal.Count > 0)
+            {
+                MessageBox.Show("Animal não pode ser eliminado pois tem consultas associadas", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -294,7 +315,7 @@ namespace ClinicaVeterinariaWPF
                     Species = TextBoxSpecies.Text,
                     Breed = TextBoxBreed.Text,
                     Age = Convert.ToInt32(TextBoxAge.Text),
-                    Weight = Convert.ToInt32(TextBoxWeight.Text),
+                    Weight = Convert.ToDecimal(TextBoxWeight.Text),
                     Color = TextBoxColor.Text,
                     Sex = value
                 };
@@ -376,17 +397,17 @@ namespace ClinicaVeterinariaWPF
             }
             if (!(TextBoxAge.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxAge.Text))
             {
-                MessageBox.Show("Insira idade válida do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Insira idade válida do animal (apenas números)", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            if (!(TextBoxWeight.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxWeight.Text))
+            if (!double.TryParse(TextBoxWeight.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double weight) || string.IsNullOrEmpty(TextBoxWeight.Text))
             {
-                MessageBox.Show("Insira o peso válido do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Insira o peso válido do animal (apenas números (ponto como decimal))", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(TextBoxColor.Text) || (TextBoxColor.Text.Any(char.IsDigit)))
             {
-                MessageBox.Show("Insira a cor do animal", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Insira a cor do animal (apenas letras)", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (ComboBoxSex.SelectedValue == null)

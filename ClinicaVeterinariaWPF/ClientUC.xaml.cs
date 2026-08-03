@@ -347,19 +347,19 @@ namespace ClinicaVeterinariaWPF
 
             if (TextBoxNif.Text.Length != 9 || !(TextBoxNif.Text.All(char.IsDigit)))
             {
-                MessageBox.Show("Insira um NIF válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Insira um NIF válido (9 números)", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
             if (string.IsNullOrEmpty(TextBoxPhoneNumber.Text) || !(TextBoxPhoneNumber.Text.All(char.IsDigit)))
             {
-                MessageBox.Show("Insira um número de telefone válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Insira um número de telefone válido (apenas números)", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
             if (string.IsNullOrEmpty(TextBoxEmail.Text) || !(TextBoxEmail.Text.Contains("@")))
             {
-                MessageBox.Show("Insira um E-Mail válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Insira um E-Mail válido (Tem que conter @)", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 

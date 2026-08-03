@@ -420,7 +420,7 @@ namespace ClinicaVeterinariaWPF
 
             if (!(TextBoxPhoneNumber.Text.All(char.IsDigit)) || string.IsNullOrEmpty(TextBoxPhoneNumber.Text))
             {
-                MessageBox.Show("Insira um número de telefone válido", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Insira um número de telefone válido (apenas números)", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 

@@ -87,7 +87,7 @@
             <StackPanel>
                 <TextBlock Text="Dados da sala" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
                 <TextBlock Text="Número da sala" Margin="0,0,0,3" FontWeight="DemiBold"/>
-                <TextBox x:Name="TextBoxRoomNumber" IsEnabled="False" Margin="0,0,0,5"/>
+                <TextBox x:Name="TextBoxRoomNumber" IsEnabled="False" Margin="0,0,0,5" Background="LightGray" BorderBrush="LightGray" Foreground="Gray" />
                 <TextBlock Text="Tipo" Margin="0,0,0,3" FontWeight="DemiBold"/>
                 <TextBox x:Name="TextBoxType" Margin="0,0,0,5"/>
                 <CheckBox x:Name="CheckBoxUnderMaintenance" Content="Em Manutenção" Margin="0,5,0,0" FontWeight="DemiBold"/>

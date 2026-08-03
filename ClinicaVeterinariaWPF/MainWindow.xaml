@@ -52,18 +52,18 @@
                                 <TextBlock Text="   Início" VerticalAlignment="Center" FontWeight="Bold"/>
                             </StackPanel>
                         </Button>
-                        <Button Grid.Row="1" x:Name="btnClients" Style="{StaticResource SidebarButton}" Click="btnClients_Click">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <fa:IconBlock Icon="User" FontSize="25" Width="30"/>
-                                <TextBlock Text="   Clientes" VerticalAlignment="Center" FontWeight="Bold"/>
-                            </StackPanel>
-                        </Button> 
-                        <Button Grid.Row="2" x:Name="btnAnimals" Style="{StaticResource SidebarButton}" Click="btnAnimals_Click">
+                        <Button Grid.Row="1" x:Name="btnAnimals" Style="{StaticResource SidebarButton}" Click="btnAnimals_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <fa:IconBlock Icon="Cat" FontSize="25" Width="30"/>
                                 <TextBlock Text="   Animais" VerticalAlignment="Center" FontWeight="Bold"/>
                             </StackPanel>
                         </Button>
+                        <Button Grid.Row="2" x:Name="btnClients" Style="{StaticResource SidebarButton}" Click="btnClients_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="User" FontSize="25" Width="30"/>
+                                <TextBlock Text="   Clientes" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Button> 
                         <Button Grid.Row="3" x:Name="btnDoctors" Style="{StaticResource SidebarButton}" Click="btnDoctors_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <fa:IconBlock Icon="UserMd" FontSize="25" Width="30"/>
