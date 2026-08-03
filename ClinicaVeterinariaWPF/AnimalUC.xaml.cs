@@ -35,6 +35,8 @@ namespace ClinicaVeterinariaWPF
             this.Loaded += AnimalWindow_Loaded;
         }
 
+        public event EventHandler CloseRequested;
+
         private async void AnimalWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadClients();
@@ -204,6 +206,30 @@ namespace ClinicaVeterinariaWPF
                     }
                 }
 
+                if(appointmentHelpers.Count > 0)
+                {
+                    AppointmentHelper selectedAppointment = null;
+
+                    foreach (AppointmentHelper appointment in appointmentHelpers)
+                    {
+                        if (appointment.Date > DateTime.Now)
+                        {
+                            if (selectedAppointment == null || appointment.Date < selectedAppointment.Date)
+                            {
+                                selectedAppointment = appointment;
+                            }
+                        }
+                    }
+
+                    if(selectedAppointment != null)
+                    {
+                        BorderNext.Text = selectedAppointment.DateTimeDisplay;
+                    }
+                }
+
+                BorderNumber.Text = appointmentHelpers.Count.ToString();
+                BorderOwner.Text = selected.ClientName;
+
                 DataGridAppointments.ItemsSource = null;
                 DataGridAppointments.ItemsSource = appointmentHelpers;
 
@@ -311,7 +337,7 @@ namespace ClinicaVeterinariaWPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-
+            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void ClearTools()
@@ -324,6 +350,9 @@ namespace ClinicaVeterinariaWPF
             TextBoxWeight.Text = "";
             TextBoxColor.Text = "";
             ComboBoxSex.SelectedIndex = 2;
+            BorderNumber.Text = "---";
+            BorderNext.Text = "---";
+            BorderOwner.Text = "---";
 
             DataGridAppointments.ItemsSource = null;
         }

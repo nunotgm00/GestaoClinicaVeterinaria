@@ -44,6 +44,8 @@ namespace ClinicaVeterinariaWPF
             await LoadDoctorSchedules();
         }
 
+        public event EventHandler CloseRequested;
+
         private async Task LoadAnimals()
         {
             var response = await apiService.GetAllAsync<Animal>(urlBase, "Animal");
@@ -334,7 +336,7 @@ namespace ClinicaVeterinariaWPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-
+            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void ClearTools()

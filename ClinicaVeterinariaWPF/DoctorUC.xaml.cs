@@ -35,6 +35,8 @@ namespace ClinicaVeterinariaWPF
             this.Loaded += DoctorWindow_Loaded;
         }
 
+        public event EventHandler CloseRequested;
+
         private async void DoctorWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadDoctors();
@@ -350,7 +352,7 @@ namespace ClinicaVeterinariaWPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-
+            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void CreateSchedule()

@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="#F6FFFE">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="120"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="25*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
@@ -25,8 +26,13 @@
                         <ComboBoxItem Content="NIF"/>
                         <ComboBoxItem Content="Telefone"/>
                     </ComboBox>
-                    <TextBox x:Name="TextBoxSearch" Width="497" Margin="0,0,10,0"/>
-                    <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click"/>
+                    <TextBox x:Name="TextBoxSearch" Width="500" Margin="0,0,10,0"/>
+                    <Button x:Name="btnSearch" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Search"/>
+                            <TextBlock Text="  Procurar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -38,12 +44,35 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                    <TextBlock Text="Lista de clientes" VerticalAlignment="Center" Margin="0,0,352,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
-                    <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
-                    <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click"/>
-                    <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click"/>
-                </StackPanel>
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Lista de clientes" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="btnAllList" Style="{StaticResource PrimaryButton}" Width="130" Margin="0,0,10,0" Click="btnAllList_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="List"/>
+                                <TextBlock Text="  Lista Completa" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnEdit" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="PencilAlt"/>
+                                <TextBlock Text="  Editar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnDelete" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="Trash"/>
+                                <TextBlock Text="  Eliminar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
 
                 <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="False" FontWeight="DemiBold">
                     <DataGrid.Columns>
@@ -58,14 +87,16 @@
 
         <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
             <StackPanel>
-                <TextBlock Text="Dados do cliente" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
-                <Grid>
+                
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="400"/>
-                        <ColumnDefinition Width="440"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="13*"/>
+                        <ColumnDefinition Width="8*"/>
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Text="Dados do cliente" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
                         <TextBlock Text="Nome" FontWeight="DemiBold"/>
                         <TextBox x:Name="TextBoxName" Margin="0,2,2,5"/>
                         <TextBlock Text="Morada" FontWeight="DemiBold"/>
@@ -92,21 +123,127 @@
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Sem dono" FontWeight="Bold" FontSize="15" Foreground="#2D6A6A"/>
                         <TextBlock Grid.Row="0" Grid.Column="2" Text="Associado ao cliente" FontWeight="Bold" FontSize="15" Foreground="#2D6A6A" />
 
-                        <ListBox x:Name="ListBoxAvailableAnimals" Grid.Row="1" Grid.Column="0" DisplayMemberPath="Name" FontWeight="DemiBold"/>
+                        <ListBox x:Name="ListBoxAvailableAnimals" Grid.Row="1" Grid.Column="0" DisplayMemberPath="Name" FontWeight="DemiBold" SelectionChanged="ListBoxAvailableAnimals_SelectionChanged"/>
 
                         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,5,0">
-                            <Button x:Name="btnAddAnimal" Content="&gt;&gt;" Style="{StaticResource PrimaryButton}" Height="35" Width="50" Margin="0,0,0,10" Click="btnAddAnimal_Click"/>
-                            <Button x:Name="btnRemoveAnimal" Content="&lt;&lt;" Style="{StaticResource PrimaryButton}" Height="35" Width="50" Click="btnRemoveAnimal_Click"/>
+                            <Button x:Name="btnAddAnimal" Style="{StaticResource PrimaryButton}" Height="35" Width="50" Margin="0,0,0,10" Click="btnAddAnimal_Click">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <fa:IconBlock Icon="ArrowRight"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnRemoveAnimal" Style="{StaticResource PrimaryButton}" Height="35" Width="50" Click="btnRemoveAnimal_Click">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <fa:IconBlock Icon="ArrowLeft"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
 
-                        <ListBox x:Name="ListBoxClientAnimals" Grid.Row="1" Grid.Column="2" DisplayMemberPath="Name" FontWeight="DemiBold"/>
+                        <ListBox x:Name="ListBoxClientAnimals" Grid.Row="1" Grid.Column="2" DisplayMemberPath="Name" FontWeight="DemiBold" SelectionChanged="ListBoxClientAnimals_SelectionChanged"/>
+                    </Grid>
+
+                    <Grid Grid.Column="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="3*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Text="Dados do animal" VerticalAlignment="Center" Margin="15,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                            </StackPanel>
+                            <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="15,0,5,10" Background="#BFF2EF">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <fa:IconBlock Icon="Dog" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="2*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <TextBlock Text="Nome" FontSize="14" FontWeight="Bold"/>
+                                        </Grid>
+                                        <Grid Grid.Row="1" VerticalAlignment="Center">
+                                            <TextBlock x:Name="TextBlockAnimalName" Text="---" FontSize="16" FontWeight="Bold"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="15,0,5,10" Background="#BFF2EF">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <fa:IconBlock Icon="Paw" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="2*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <TextBlock Text="Espécie" FontSize="14" FontWeight="Bold"/>
+                                        </Grid>
+                                        <Grid Grid.Row="1" VerticalAlignment="Center">
+                                            <TextBlock x:Name="TextBlockAnimalSpecies" Text="---" FontSize="16" FontWeight="Bold"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="3" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="15,0,5,10" Background="#BFF2EF">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <fa:IconBlock Icon="VenusMars" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="2*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <TextBlock Text="Sexo" FontSize="14" FontWeight="Bold"/>
+                                        </Grid>
+                                        <Grid Grid.Row="1" VerticalAlignment="Center">
+                                            <TextBlock x:Name="TextBlockAnimalSex" Text="---" FontSize="16" FontWeight="Bold"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
                     </Grid>
                 </Grid>
 
                 <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Height="35">
-                    <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click"/>
-                    <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnSave_Click"/>
-                    <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click"/>
+                    <Button x:Name="btnNew" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Plus"/>
+                            <TextBlock Text="   Novo" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSave" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnSave_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Save"/>
+                            <TextBlock Text="   Guardar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnClose" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Times"/>
+                            <TextBlock Text="   Fechar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Border>

@@ -24,32 +24,47 @@ namespace ClinicaVeterinariaWPF
 
         private void btnClients_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new ClientUC();
+            ClientUC clientUC = new ClientUC();
+            clientUC.CloseRequested += UC_CloseRequested;
+            ContentArea.Content = clientUC;
         }
 
         private void btnAnimals_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new AnimalUC();
+            AnimalUC animalUC = new AnimalUC();
+            animalUC.CloseRequested += UC_CloseRequested;
+            ContentArea.Content = animalUC;
         }
 
         private void btnDoctors_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new DoctorUC();
+            DoctorUC doctorUC = new DoctorUC();
+            doctorUC.CloseRequested += UC_CloseRequested;
+            ContentArea.Content = doctorUC;
         }
 
         private void btnRooms_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new RoomUC();
+            RoomUC roomUC = new RoomUC();
+            roomUC.CloseRequested += UC_CloseRequested;
+            ContentArea.Content = roomUC;
         }
 
         private void btnAppointments_Click(object sender, RoutedEventArgs e)
         {
-            ContentArea.Content = new AppointmentUC();
+            AppointmentUC appointmentUC = new AppointmentUC();
+            appointmentUC.CloseRequested += UC_CloseRequested;
+            ContentArea.Content = appointmentUC;
         }
 
         private void btnCredits_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void UC_CloseRequested(object sender, EventArgs e)
+        {
+            ContentArea.Content = null;
         }
     }
 }

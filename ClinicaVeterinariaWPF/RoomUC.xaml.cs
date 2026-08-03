@@ -35,6 +35,8 @@ namespace ClinicaVeterinariaWPF
             this.Loaded += RoomWindow_Loaded;
         }
 
+        public event EventHandler CloseRequested;
+
         private async void RoomWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadRooms();
@@ -230,7 +232,7 @@ namespace ClinicaVeterinariaWPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-
+            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void ClearTools()

@@ -35,6 +35,8 @@ namespace ClinicaVeterinariaWPF
             this.Loaded += ClientWindow_Loaded;
         }
 
+        public event EventHandler CloseRequested;
+
         private async void ClientWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadClients();
@@ -96,6 +98,7 @@ namespace ClinicaVeterinariaWPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -146,6 +149,8 @@ namespace ClinicaVeterinariaWPF
         private async void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             Client selected = DataGridSearch.SelectedItem as Client;
+
+            ClearTools();
 
             if (selected == null)
             {
@@ -320,6 +325,10 @@ namespace ClinicaVeterinariaWPF
             TextBoxNif.Text = "";
             TextBoxPhoneNumber.Text = "";
             TextBoxEmail.Text = "";
+            TextBlockAnimalName.Text = "---";
+            TextBlockAnimalSex.Text = "---";
+            TextBlockAnimalSpecies.Text = "---";
+
         }
 
         private bool Validation()
@@ -384,6 +393,30 @@ namespace ClinicaVeterinariaWPF
         private async void btnAllList_Click(object sender, RoutedEventArgs e)
         {
             await LoadClients();
+        }
+
+        private void ListBoxClientAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Animal selectedAnimal = (Animal)ListBoxClientAnimals.SelectedItem;
+
+            if(selectedAnimal != null)
+            {
+                TextBlockAnimalName.Text = selectedAnimal.Name;
+                TextBlockAnimalSex.Text = selectedAnimal.Sex;
+                TextBlockAnimalSpecies.Text = selectedAnimal.Species;
+            }
+        }
+
+        private void ListBoxAvailableAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Animal selectedAnimal = (Animal)ListBoxAvailableAnimals.SelectedItem;
+
+            if(selectedAnimal != null)
+            {
+                TextBlockAnimalName.Text = selectedAnimal.Name;
+                TextBlockAnimalSex.Text = selectedAnimal.Sex;
+                TextBlockAnimalSpecies.Text = selectedAnimal.Species;
+            }
         }
     }
 }

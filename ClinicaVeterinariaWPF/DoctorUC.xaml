@@ -5,14 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="#F6FFFE">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="120"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="24*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
@@ -20,12 +21,17 @@
                 <TextBlock Text="Pesquisa de doutores" VerticalAlignment="Center" Margin="0,0,5,20" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
                     <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="DemiBold"/>
-                    <ComboBox x:Name="ComboBoxSearch" Width="160" Margin="0,0,10,0">
+                    <ComboBox x:Name="ComboBoxSearch" Width="150" Margin="0,0,10,0">
                         <ComboBoxItem Content="Nome"/>
                         <ComboBoxItem Content="Especialidade"/>
                     </ComboBox>
-                    <TextBox x:Name="TextBoxSearch" Width="387" Margin="0,0,10,0"/>
-                    <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click"/>
+                    <TextBox x:Name="TextBoxSearch" Width="500" Margin="0,0,10,0"/>
+                    <Button x:Name="btnSearch" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Search"/>
+                            <TextBlock Text="  Procurar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -37,12 +43,35 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                    <TextBlock Text="Lista de doutores" VerticalAlignment="Center" Margin="0,0,239,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
-                    <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
-                    <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click"/>
-                    <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click"/>
-                </StackPanel>
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Lista de doutores" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="btnAllList" Style="{StaticResource PrimaryButton}" Width="130" Margin="0,0,10,0" Click="btnAllList_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="List"/>
+                                <TextBlock Text="  Lista completa" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnEdit" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="PencilAlt"/>
+                                <TextBlock Text="  Editar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnDelete" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="Trash"/>
+                                <TextBlock Text="  Eliminar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
 
                 <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" FontWeight="DemiBold">
                     <DataGrid.Columns>
@@ -55,61 +84,109 @@
         </Border>
 
         <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
-            <StackPanel>
-                <TextBlock Text="Dados do doutor" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="500"/>
-                    </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="0,8,20,0">
-                        <TextBlock Text="Nome" FontWeight="DemiBold"/>
-                        <TextBox x:Name="TextBoxName" Margin="0,2,0,5"/>
-                        <TextBlock Text="Telefone" FontWeight="DemiBold"/>
-                        <TextBox x:Name="TextBoxPhoneNumber" Margin="0,2,0,5"/>
-                        <TextBlock Text="Especialidade" FontWeight="DemiBold"/>
-                        <TextBox x:Name="TextBoxSpeciality" Margin="0,2,0,5"/>
-                        <CheckBox x:Name="CheckBoxActive" Content="Ativo" Margin="0,5,0,0" FontWeight="DemiBold"/>
-                    </StackPanel>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Dados do doutor" VerticalAlignment="Center" Margin="0,0,5,14" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
-                        <TextBlock Text="Horário Semanal" FontWeight="Bold" Margin="0,0,0,5" FontSize="15" Foreground="#2D6A6A"/>
-
-                        <DataGrid x:Name="DataGridSchedule" AutoGenerateColumns="False" IsReadOnly="True" Height="180" Margin="0,0,0,10" FontWeight="DemiBold">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Dia" Binding="{Binding DayOfWeek}" Width="1.5*"/>
-                                <DataGridTextColumn Header="Início" Binding="{Binding StartDisplay}" Width="*"/>
-                                <DataGridTextColumn Header="Fim" Binding="{Binding EndDisplay}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-
-                        <StackPanel Orientation="Horizontal">
-                            <Button x:Name="btnAddHour" Content="Adicionar Horas" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,5,0" Click="btnAddHour_Click"/>
-                            <Button x:Name="btnDayOff" Content="Folga" Style="{StaticResource PrimaryButton}" Width="120" Click="btnDayOff_Click"/>
+                        <StackPanel Grid.Column="0" Margin="0,8,20,0">
+                            <TextBlock Text="Nome" FontWeight="DemiBold"/>
+                            <TextBox x:Name="TextBoxName" Margin="0,2,0,5"/>
+                            <TextBlock Text="Telefone" FontWeight="DemiBold"/>
+                            <TextBox x:Name="TextBoxPhoneNumber" Margin="0,2,0,5"/>
+                            <TextBlock Text="Especialidade" FontWeight="DemiBold"/>
+                            <TextBox x:Name="TextBoxSpeciality" Margin="0,2,0,5"/>
+                            <CheckBox x:Name="CheckBoxActive" Content="Ativo" Margin="0,5,0,0" FontWeight="DemiBold"/>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <StackPanel Margin="0,0,10,0">
-                                <TextBlock Text="Hora Início" FontWeight="DemiBold"/>
-                                <xctk:TimePicker x:Name="TimePickerStart" Width="100" Format="ShortTime"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="Hora Fim" FontWeight="DemiBold" Margin="16,0,0,0"/>
-                                <xctk:TimePicker x:Name="TimePickerEnd" Width="100" Format="ShortTime" Margin="16,0,0,0"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <Grid Grid.Column="1" Margin="20,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="10*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Horário Semanal" FontWeight="Bold" Margin="0,0,0,0" FontSize="15" Foreground="#2D6A6A"/>
 
-                    </StackPanel>
+                                <DataGrid Grid.Row="1" x:Name="DataGridSchedule" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,5,0,20" FontWeight="DemiBold">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Dia" Binding="{Binding DayOfWeek}" Width="1.5*"/>
+                                        <DataGridTextColumn Header="Início" Binding="{Binding StartDisplay}" Width="*"/>
+                                        <DataGridTextColumn Header="Fim" Binding="{Binding EndDisplay}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+
+                            <Grid Grid.Column="1" Margin="0,33,0,22">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Button Grid.Row="0" x:Name="btnAddHour" Style="{StaticResource PrimaryButton}" Width="130" Margin="0,0,0,0" Click="btnAddHour_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <fa:IconBlock Icon="Clock"/>
+                                        <TextBlock Text="  Adicionar horas" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock Grid.Row="1" Text="Hora Início" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                <xctk:TimePicker Grid.Row="2" x:Name="TimePickerStart" Width="120" Format="ShortTime" Margin="0,0,0,10"/>
+                                <TextBlock Grid.Row="3" Text="Hora Fim" FontWeight="DemiBold" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                <xctk:TimePicker Grid.Row="4" x:Name="TimePickerEnd" Width="120" Format="ShortTime" Margin="0,0,0,10"/>
+                                <Button Grid.Row="5" x:Name="btnDayOff" Style="{StaticResource PrimaryButton}" Width="130" Margin="0,2,0,0" Click="btnDayOff_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <fa:IconBlock Icon="Bed"/>
+                                        <TextBlock Text="  Folga" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+
+                        </Grid>
+                    </Grid>
                 </Grid>
 
-                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Height="35">
-                    <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click"/>
-                    <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0"  Click="btnSave_Click"/>
-                    <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Height="35">
+                    <Button x:Name="btnNew" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Plus"/>
+                            <TextBlock Text="   Novo" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSave" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0"  Click="btnSave_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Save"/>
+                            <TextBlock Text="   Guardar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnClose" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Times"/>
+                            <TextBlock Text="   Fechar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </Border>
 
     </Grid>

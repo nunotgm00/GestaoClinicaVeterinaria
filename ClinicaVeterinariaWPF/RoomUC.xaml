@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClinicaVeterinariaWPF"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="#F6FFFE">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="122"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="24*"/>
+            <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,10" Background="#EDFFFE">
@@ -20,12 +21,17 @@
 
                 <StackPanel Orientation="Horizontal" Height="36">
                     <TextBlock Text="Procurar por:" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="DemiBold"/>
-                    <ComboBox x:Name="ComboBoxSearch" Width="120" Margin="0,0,10,0">
+                    <ComboBox x:Name="ComboBoxSearch" Width="150" Margin="0,0,10,0">
                         <ComboBoxItem Content="Número"/>
                         <ComboBoxItem Content="Tipo"/>
                     </ComboBox>
-                    <TextBox x:Name="TextBoxSearch" Width="324" Margin="0,0,10,0"/>
-                    <Button x:Name="btnSearch" Content="Procurar" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click"/>
+                    <TextBox x:Name="TextBoxSearch" Width="500" Margin="0,0,10,0"/>
+                    <Button x:Name="btnSearch" Style="{StaticResource PrimaryButton}" Width="100" Click="btnSearch_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Search"/>
+                            <TextBlock Text="  Procurar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -37,12 +43,35 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                    <TextBlock Text="Lista de salas" VerticalAlignment="Center" Margin="0,0,178,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
-                    <Button x:Name="btnAllList" Content="Lista Completa" Style="{StaticResource PrimaryButton}" Width="120" Margin="0,0,10,0" Click="btnAllList_Click"/>
-                    <Button x:Name="btnEdit" Content="Editar" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click"/>
-                    <Button x:Name="btnDelete" Content="Eliminar" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click"/>
-                </StackPanel>
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Lista de salas" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="20" FontWeight="Bold" Foreground="#2D6A6A"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="btnAllList" Style="{StaticResource PrimaryButton}" Width="130" Margin="0,0,10,0" Click="btnAllList_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="List"/>
+                                <TextBlock Text="  Lista Completa" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnEdit" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="PencilAlt"/>
+                                <TextBlock Text="  Editar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnDelete" Style="{StaticResource DangerButton}" Width="100" Click="btnDelete_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <fa:IconBlock Icon="Trash"/>
+                                <TextBlock Text="  Eliminar" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
 
                 <DataGrid x:Name="DataGridSearch" Grid.Row="1" Margin="0,0,0,10" AutoGenerateColumns="False" IsReadOnly="True" FontWeight="DemiBold">
                     <DataGrid.Columns>
@@ -64,9 +93,24 @@
                 <CheckBox x:Name="CheckBoxUnderMaintenance" Content="Em Manutenção" Margin="0,5,0,0" FontWeight="DemiBold"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="35">
-                    <Button x:Name="btnNew" Content="Novo" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click"/>
-                    <Button x:Name="btnSave" Content="Guardar" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0"  Click="btnSave_Click"/>
-                    <Button x:Name="btnClose" Content="Fechar" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click"/>
+                    <Button x:Name="btnNew" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0" Click="btnNew_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Plus"/>
+                            <TextBlock Text="   Novo" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSave" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,10,0"  Click="btnSave_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Save"/>
+                            <TextBlock Text="   Guardar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnClose" Style="{StaticResource SecondaryButton}" Width="100" Click="btnClose_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="Times"/>
+                            <TextBlock Text="   Fechar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Border>
