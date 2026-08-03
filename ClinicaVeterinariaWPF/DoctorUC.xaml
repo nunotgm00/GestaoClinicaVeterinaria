@@ -55,7 +55,7 @@
                         <Button x:Name="btnAllList" Style="{StaticResource PrimaryButton}" Width="130" Margin="0,0,10,0" Click="btnAllList_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <fa:IconBlock Icon="List"/>
-                                <TextBlock Text="  Lista completa" VerticalAlignment="Center"/>
+                                <TextBlock Text="  Lista Completa" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                         <Button x:Name="btnEdit" Style="{StaticResource EditButton}" Width="100" Margin="0,0,10,0" Click="btnEdit_Click">
@@ -125,7 +125,7 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Text="Horário Semanal" FontWeight="Bold" Margin="0,0,0,0" FontSize="15" Foreground="#2D6A6A"/>
 
-                                <DataGrid Grid.Row="1" x:Name="DataGridSchedule" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,5,0,20" FontWeight="DemiBold">
+                                <DataGrid Grid.Row="1" x:Name="DataGridSchedule" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,5,0,20" FontWeight="DemiBold" RowHeight="29">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Dia" Binding="{Binding DayOfWeek}" Width="1.5*"/>
                                         <DataGridTextColumn Header="Início" Binding="{Binding StartDisplay}" Width="*"/>

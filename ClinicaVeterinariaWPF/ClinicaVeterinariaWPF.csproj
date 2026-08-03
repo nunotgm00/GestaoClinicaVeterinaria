@@ -87,17 +87,14 @@
     <Compile Include="AppointmentUC.xaml.cs">
       <DependentUpon>AppointmentUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppointmentWindow.xaml.cs">
-      <DependentUpon>AppointmentWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ClientUC.xaml.cs">
       <DependentUpon>ClientUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="DoctorUC.xaml.cs">
       <DependentUpon>DoctorUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DoctorWindow.xaml.cs">
-      <DependentUpon>DoctorWindow.xaml</DependentUpon>
+    <Compile Include="MainUC.xaml.cs">
+      <DependentUpon>MainUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Animal.cs" />
     <Compile Include="Models\Appointment.cs" />
@@ -111,15 +108,8 @@
     <Compile Include="RoomUC.xaml.cs">
       <DependentUpon>RoomUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RoomWindow.xaml.cs">
-      <DependentUpon>RoomWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Services\ApiService.cs" />
     <Page Include="AnimalUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AnimalWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -127,15 +117,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AppointmentWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ClientUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ClientWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,7 +125,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DoctorWindow.xaml">
+    <Page Include="MainUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,25 +133,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AnimalWindow.xaml.cs">
-      <DependentUpon>AnimalWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ClientWindow.xaml.cs">
-      <DependentUpon>ClientWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RoomUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="RoomWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,6 +172,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\logoPacheco.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dogCat.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

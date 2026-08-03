@@ -17,6 +17,10 @@ namespace ClinicaVeterinariaAPI.Controllers
            );
 
         // GET: api/DoctorSchedule
+        /// <summary>
+        /// All DoctorSchedules
+        /// </summary>
+        /// <returns>DoctorSchedules list</returns>
         public List<DoctorSchedule> Get()
         {
             var list = from DoctorSchedule in db.DoctorSchedules orderby DoctorSchedule.Id select DoctorSchedule;
@@ -24,6 +28,11 @@ namespace ClinicaVeterinariaAPI.Controllers
         }
 
         // GET: api/DoctorSchedule/5
+        /// <summary>
+        /// Specific (one) DoctorSchedule
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>DoctorSchedule</returns>
         public IHttpActionResult Get(int id)
         {
             var doctorSchedule = db.DoctorSchedules.FirstOrDefault(ds => ds.Id == id);
@@ -38,6 +47,10 @@ namespace ClinicaVeterinariaAPI.Controllers
         }
 
         // POST: api/DoctorSchedule
+        /// <summary>
+        /// Creates a new DoctorSchedule
+        /// </summary>
+        /// <param name="newDoctorSchedule">DoctorSchedule</param>
         public IHttpActionResult Post([FromBody] DoctorSchedule newDoctorSchedule)
         {
             var doctorSchedule = db.DoctorSchedules.FirstOrDefault(ds => ds.Id == newDoctorSchedule.Id);
@@ -70,6 +83,11 @@ namespace ClinicaVeterinariaAPI.Controllers
         }
 
         // PUT: api/DoctorSchedule/5
+        /// <summary>
+        /// Updates (one) DoctorSchedule
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedDoctorSchedule">DoctorSchedule</param>
         public IHttpActionResult Put(int id, [FromBody] DoctorSchedule updatedDoctorSchedule)
         {
             var doctorSchedule = db.DoctorSchedules.FirstOrDefault(ds => ds.Id == updatedDoctorSchedule.Id);
@@ -105,6 +123,10 @@ namespace ClinicaVeterinariaAPI.Controllers
         }
 
         // DELETE: api/DoctorSchedule/5
+        /// <summary>
+        /// Deletes (one) DoctorSchedule
+        /// </summary>
+        /// <param name="id"></param>
         public IHttpActionResult Delete(int id)
         {
             var doctorSchedule = db.DoctorSchedules.FirstOrDefault(ds => ds.Id == id);
